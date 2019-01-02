@@ -1,7 +1,7 @@
 $theme:(
   colors: (
     transparent: transparent,
-    black: #22292f,
+    black: #0C0C0C,
     grey-darkest: #3d4852,
     grey-darker: #606f7b,
     grey-dark: #8795a1,
@@ -86,11 +86,11 @@ $theme:(
   screens: (
     sm: 576px,
     md: 768px,
-    lg: 992px,
-    xl: 1200px
+    lg: 1200px,
+    xl: 1400px
   ),
   fonts: (
-    sans: (system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif),
+    sans: (Raleway, system-ui, BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif),
     serif: (Constantia, Lucida Bright, Lucidabright, Lucida Serif, Lucida, DejaVu Serif, Bitstream Vera Serif, Liberation Serif, Georgia, serif),
     mono: (Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace)
   ),
@@ -133,7 +133,7 @@ $theme:(
   ),
   textColors: (
     transparent: transparent,
-    black: #22292f,
+    black: #0C0C0C,
     grey-darkest: #3d4852,
     grey-darker: #606f7b,
     grey-dark: #8795a1,
@@ -217,7 +217,7 @@ $theme:(
   ),
   backgroundColors: (
     transparent: transparent,
-    black: #22292f,
+    black: #0C0C0C,
     grey-darkest: #3d4852,
     grey-darker: #606f7b,
     grey-dark: #8795a1,
@@ -314,7 +314,7 @@ $theme:(
   borderColors: (
     default: #dae1e7,
     transparent: transparent,
-    black: #22292f,
+    black: #0C0C0C,
     grey-darkest: #3d4852,
     grey-darker: #606f7b,
     grey-dark: #8795a1,
@@ -516,7 +516,8 @@ $theme:(
     32: 8rem,
     auto: auto,
     px: 1px,
-    base: 20px
+    base: 20px,
+    lg: 50px
   ),
   negativeMargin: (
     0: 0,

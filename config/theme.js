@@ -66,6 +66,7 @@ let colors = {
     'secondary': '#3490dc',
     'info': '#3490dc',
     'primary': '#9561e2',
+    'black': '#0C0C0C',
 };
 
 module.exports = {
@@ -112,6 +113,10 @@ module.exports = {
 
     screens: {
         ...defaultConfig.screens,
+        'sm': '576px',
+        'md': '768px',
+        'lg': '1200px',
+        'xl': '1400px',
     },
 
 
@@ -135,6 +140,21 @@ module.exports = {
 
     fonts: {
         ...defaultConfig.fonts,
+        'sans': [
+            'Raleway',
+            'system-ui',
+            'BlinkMacSystemFont',
+            '-apple-system',
+            'Segoe UI',
+            'Roboto',
+            'Oxygen',
+            'Ubuntu',
+            'Cantarell',
+            'Fira Sans',
+            'Droid Sans',
+            'Helvetica Neue',
+            'sans-serif',
+        ],
     },
 
 
@@ -499,6 +519,7 @@ module.exports = {
     margin: {
         ...defaultConfig.margin,
         'base': pristine.spaceUnit.base,
+        'lg': '50px'
     },
 
 

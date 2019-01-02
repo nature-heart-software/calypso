@@ -24,6 +24,13 @@
  *    </div>
  *</div>
  */
+
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700,800');
+
+body {
+    font-family: config('fonts.sans');
+}
+
 h1,
 h2,
 h3,
