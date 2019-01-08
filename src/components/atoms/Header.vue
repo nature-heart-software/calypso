@@ -2,6 +2,8 @@
     .header {
         font-weight: bold;
         text-transform: uppercase;
+        font-size: 20px;
+        letter-spacing: .05em;
         &--brand {
             font-size: 24px;
             letter-spacing: .44em;
@@ -10,15 +12,28 @@
 
         &--main {
             font-size: 64px;
-            letter-spacing: .05em;
             line-height: 1.2;
-            &::after {
-                content: '';
+            clear: both;
+            .header__bar {
                 display: block;
-                width: 70px;
-                height: 18px;
-                background-color: white;
-                margin-top: 15px;
+                &::before {
+                    content: '';
+                    float: left;
+                    width: 70px;
+                    height: 18px;
+                    background-color: white;
+                    margin-top: 15px;
+                    clear: both;
+                }
+            }
+        }
+
+        &--right {
+            text-align: right;
+            .header__bar {
+                &::before {
+                    float: right;
+                }
             }
         }
 
@@ -31,6 +46,7 @@
 <template>
     <component class="header header--dark-theme" :class="[getLooks]" :is="tag">
         <slot></slot>
+        <div v-if="hasHeaderBar" class="header__bar"></div>
     </component>
 </template>
 
@@ -48,8 +64,11 @@ export default class Header extends Vue {
         default: '',
         brand: 'header--brand',
         main: 'header--main',
+        right: 'header--right',
     };
-
+    private get hasHeaderBar() {
+        return  this.look.split(' ').includes('main');
+    }
     private get getLooks() {
         const looks = this.look.split(' ');
         const classes = looks

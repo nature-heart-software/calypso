@@ -497,7 +497,10 @@ $theme:(
     24: 6rem,
     32: 8rem,
     px: 1px,
-    base: 20px
+    base: 20px,
+    lg: 50px,
+    xl: 75px,
+    2xl: 100px
   ),
   margin: (
     0: 0,
@@ -620,7 +623,7 @@ $theme:(
   plugins: (),
   options: (
     prefix: pr-,
-    important: false,
+    important: true,
     separator: ":"
   ),
   pristine: (

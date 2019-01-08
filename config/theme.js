@@ -498,6 +498,9 @@ module.exports = {
     padding: {
         ...defaultConfig.padding,
         'base': pristine.spaceUnit.base,
+        'lg': '50px',
+        'xl': '75px',
+        '2xl': '100px',
     },
 
 
@@ -744,7 +747,7 @@ module.exports = {
 
     options: {
         prefix: 'pr-',
-        important: false,
+        important: true,
         separator: ':',
     },
 

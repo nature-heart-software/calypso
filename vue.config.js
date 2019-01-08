@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const argv = require('minimist')(process.argv.slice(2));
+const auth = require('./auth.json');
 
 const JsonSassPlugin = require('@bit/wurielle.pristine.webpack.json-sass-plugin');
 
@@ -23,10 +24,8 @@ module.exports = {
         },
         plugins:[
             new webpack.DefinePlugin({
-                // 'API_AUTH_USERNAME': JSON.stringify(argv.apiAuthUsername.trim()),
-                // 'API_AUTH_PASSWORD': JSON.stringify(argv.apiAuthPassword.trim()),
-                // 'DOMAIN_URL': JSON.stringify(argv.domain.trim()),
-                // ...
+                'DISCORD_TOKEN': JSON.stringify(auth.discord.token),
+                'DISCORD_GUILD_ID': JSON.stringify(auth.discord.guild_id),
             }),
             new JsonSassPlugin('./config/theme.js', './config/theme.scss'),
         ]

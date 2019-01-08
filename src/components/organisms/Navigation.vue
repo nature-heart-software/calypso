@@ -4,7 +4,7 @@
             <div class="navigation__container">
                 <div class="navigation__screen">
                     <div class="navigation__screen__top">
-                        <div class="navigation__menu-button">
+                        <div class="navigation__menu-button pr-cursor-pointer" @click="fullscreen = !fullscreen">
                             <div class="navigation__menu-button__bar" v-for="i in 3"></div>
                         </div>
                         <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
@@ -57,13 +57,15 @@ export default class Navigation extends Vue {
 
         nav {
             height: 100px;
+            transition: all .5s cubic-bezier(.165, .84, .44, 1);
         }
 
         .navigation__container {
-            padding-left: 10px;
+            /*padding-left: 10px;*/
             display: flex;
             flex: 1;
             align-content: start;
+            transition: all .5s cubic-bezier(.165, .84, .44, 1);
         }
 
         .navigation__screen {
@@ -72,6 +74,7 @@ export default class Navigation extends Vue {
             display: flex;
             align-items: center;
             .navigation__screen__top {
+                transition: all .5s cubic-bezier(.165, .84, .44, 1);
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -81,6 +84,8 @@ export default class Navigation extends Vue {
                 align-items: center;
             }
             .navigation__screen__bottom{
+                transition: all .5s cubic-bezier(.165, .84, .44, 1);
+                opacity: 0;
                 display: flex;
                 position: absolute;
                 bottom: 20vh;
@@ -90,6 +95,7 @@ export default class Navigation extends Vue {
         }
 
         .navigation__screen__background {
+            background-color: config('colors.black');
             position: absolute;
             top: 0;
             left: 0;
@@ -150,6 +156,7 @@ export default class Navigation extends Vue {
                 top: 50px;
             }
             .navigation__screen__bottom {
+                opacity: 1!important;
                 margin-left: -100px;
                 margin-right: -250px;
             }

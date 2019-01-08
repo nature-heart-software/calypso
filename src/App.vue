@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <Navigation></Navigation>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -13,14 +14,21 @@
             Navigation,
         },
     })
-    export default class Home extends Vue {
+    export default class App extends Vue {
 
     }
 </script>
 
-<style lqng="scss">
+<style lang="scss">
+    body {
+        background-color: config('colors.black');
+    }
 #app {
-    background-color: config('colors.black');
-    height: 100vh;
+    /*height: 100vh;*/
+    /*overflow: auto;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*bottom: 0;*/
 }
 </style>
