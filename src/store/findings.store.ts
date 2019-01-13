@@ -1,7 +1,7 @@
 declare var DISCORD_GUILD_ID: any;
 
-import { discordApi } from '@/consts';
-import { filter } from 'lodash';
+import { discordApi, allowedProviders } from '@/consts';
+import { filter, includes } from 'lodash';
 const findings = {
     namespaced: true,
     state: {
@@ -20,8 +20,7 @@ const findings = {
                         const filteredData = filter(data, (post: any) => {
                             return post.embeds.length > 0 && post.embeds[0].provider
                                 && (
-                                    post.embeds[0].provider.name === 'YouTube'
-                                    || post.embeds[0].provider.name === 'SoundCloud'
+                                    includes(allowedProviders, post.embeds[0].provider.name)
                                 );
                         });
                         context.commit('setFindings', filteredData);

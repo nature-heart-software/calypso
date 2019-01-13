@@ -8,23 +8,26 @@
                             <div class="navigation__menu-button__bar" v-for="i in 3"></div>
                         </div>
                         <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
-                        <Player></Player>
+                        <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
+                            <Player class="pr-self-end"></Player>
+                        </div>
                     </div>
                     <div class="navigation__screen__bottom">
                         <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
                             <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Highlight</Header>
-                            <Header class="pr-w-full" look="main">Oh Hiroshima - Holding Rivers</Header>
+                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : $store.state.findings.collection[0].embeds[0].title}}</Header>
                         </div>
                         <div class="pr-w-1/3">
                             <div class="pr-ratio-1/1">
-                                <div class="pr-absolute pr-pin pr-bg-cover" :style="`background-image: url('${placeholderJPG}')`">
+                                <div class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : $store.state.findings.collection[0].embeds[0].thumbnail.proxy_url}')`">
 
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="navigation__screen__background">
-                        <div class="navigation__screen__background__image" :style="`background-image: url('${placeholderJPG}')`"></div>
+
+                        <div class="navigation__screen__background__image" :style="`background-image: url('${$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : $store.state.findings.collection[0].embeds[0].thumbnail.proxy_url}')`"></div>
                     </div>
                 </div>
             </div>
@@ -41,6 +44,9 @@ import Player from '@/components/molecules/Player.vue';
         Header,
         Player,
     },
+    computed: {
+
+    }
 })
 export default class Navigation extends Vue {
     private fullscreen: boolean = false;
@@ -113,6 +119,7 @@ export default class Navigation extends Vue {
                 right: -5%;
                 bottom: -5%;
                 background-size: cover;
+                background-position: center;
                 filter: blur(60px);
                 /*opacity: .1;*/
             }

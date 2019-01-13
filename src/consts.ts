@@ -8,4 +8,5 @@ export const discordApi = axios.create({
         'Content-Type': 'application/json',
     },
 });
-export default { discordApi };
+export const allowedProviders = ['YouTube'];
+export default { discordApi, allowedProviders };

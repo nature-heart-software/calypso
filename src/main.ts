@@ -4,7 +4,9 @@ import router from '@/router';
 import store from '@/store';
 import '@/plugins/element.js';
 import '@/styles/main.scss';
-
+import { Slider } from 'element-ui';
+import 'element-ui/lib/theme-chalk/slider.css';
+Vue.component('el-slider', Slider);
 Vue.config.productionTip = false;
 
 new Vue({
