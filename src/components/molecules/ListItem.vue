@@ -4,7 +4,6 @@
         display: flex;
         //margin-top: -200px;
         position: relative;
-        pointer-events: none;
         &:first-of-type {
             margin-top: 0;
         }
@@ -18,7 +17,6 @@
             bottom: 0;
             overflow: hidden;
             opacity: .3;
-            pointer-events: auto;
             .list-item__background__image {
                 position: absolute;
                 top: -5%;
@@ -31,7 +29,6 @@
         }
         .list-item__content__front {
             display: flex;
-            pointer-events: auto;
         }
         .list-item__content {
             width: 50%;
@@ -55,7 +52,6 @@
             }
             .list-item__content__title {
                 position: relative;
-                pointer-events: auto;
                 .list-item__content__title__header {
                     position: absolute;
                     top: 0;
@@ -106,7 +102,7 @@
 </style>
 
 <template>
-    <div class="list-item" :class="[isEven(index) ? '' : 'list-item--odd']">
+    <div class="list-item" :class="[isEven(index) ? '' : 'list-item--odd']" @click="play()">
         <div class="list-item__background">
             <div class="list-item__background__image" :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
         </div>
@@ -149,6 +145,9 @@ export default class ListItem extends Vue {
 
     private isEven(n: number) {
         return n % 2 == 0;
+    }
+    private play() {
+        this.$store.dispatch('player/play', this.song);
     }
 }
 </script>

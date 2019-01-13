@@ -8,6 +8,7 @@
                             <div class="navigation__menu-button__bar" v-for="i in 3"></div>
                         </div>
                         <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
+                        <Player></Player>
                     </div>
                     <div class="navigation__screen__bottom">
                         <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
@@ -34,9 +35,11 @@
 <script lang="ts">
 import {Component, Vue, Prop} from 'vue-property-decorator';
 import Header from '@/components/atoms/Header.vue';
+import Player from '@/components/molecules/Player.vue';
 @Component({
     components: {
         Header,
+        Player,
     },
 })
 export default class Navigation extends Vue {
