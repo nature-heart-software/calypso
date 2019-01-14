@@ -25,7 +25,24 @@
             letter-spacing: .1rem;
         }
         .player__trackProgress {
-
+            /deep/ {
+                .el-slider__runway {
+                    margin: 0;
+                    background-color: white;
+                    border-radius: 0;
+                    .el-slider__bar {
+                        border-radius: 0;
+                        @apply bg-grey-darker;
+                    }
+                    .el-slider__button {
+                        height: 12px;
+                        width: 12px;
+                        border: 0;
+                        background-color: white;
+                        box-shadow: 0 2px 4px 0 rgba(0,0,0,1);
+                    }
+                }
+            }
         }
         .player__controls {
             flex: 1;
@@ -58,7 +75,7 @@
 
 <template>
     <div class="player">
-        <div class="player__controls pr-mr-8">
+        <div class="player__controls pr-mr-8 pr-py-2 pr-pt-4">
             <div class="player__controls__top pr-w-full">
                 <div class="player__controls__buttons">
                     <div class="player__controls__button" @click="playPrevious()">
@@ -74,8 +91,13 @@
                 </div>
             </div>
             <div class="player__controls__middle pr-w-full">
-                <div class="player__trackName">
-                    <span v-if="song">{{song.embeds[0].title}} - {{song.embeds[0].author.name}}</span>
+                <div class="player__trackName pr-my-2 pr-mt-0">
+                    <div>
+                        <a :title="song.embeds[0].title" :href="song.embeds[0].url" class="pr-text-white hover:pr-text-grey-light pr-overflow-hidden pr-whitespace-no-wrap" target="_blank" v-if="song">{{song.embeds[0].title}}</a>
+                    </div>
+                    <div class="pr-leading-none">
+                        <a :title=" song.embeds[0].title" :href="song.embeds[0].author.url" class="pr-text-xs pr-text-grey-light hover:pr-text-grey" target="_blank" v-if="song">{{song.embeds[0].author.name}}</a>
+                    </div>
                 </div>
             </div>
             <div class="player__controls__bottom pr-w-full">
