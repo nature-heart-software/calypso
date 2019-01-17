@@ -27,7 +27,7 @@
                     <div class="navigation__screen__background">
                         <TweenTransition ref="background" class="pr-absolute pr-pin">
                             <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
-                                <img :key="$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''" class="navigation__screen__background__image" :src="$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''">
+                                <img :key="this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : ''" class="navigation__screen__background__image" :src="this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : ''">
                             </transition>
                         </TweenTransition>
                     </div>
@@ -47,24 +47,27 @@ import {TweenLite} from 'gsap';
     components: {
         Header,
         Player,
-        TweenTransitio,n
+        TweenTransition,
     },
     computed: {
 
-    ,}
+    },
 })
 export default class Navigation extends Vue {
     private fullscreen: boolean = false;
     private placeholderJPG: string = require('@/assets/placeholder.jpg');
+    get cover() {
+        return this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : '';
+    }
     public backgroundTransitionEnter(el, done) {
-        (this.$ref.background] as any).hide(done);
+        (this.$refs['background'] as any).hide(done);
     }
 
     public backgroundTransitionLeave(el, done) {
-        (this.$ref.background] as any).show(done);
+        (this.$refs['background'] as any).show(done);
+        done();
     }
     public mounted() {
-        console.log(this.$ref.background]);
     }
 }
 </script>

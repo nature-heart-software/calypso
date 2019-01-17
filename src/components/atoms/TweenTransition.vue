@@ -48,23 +48,22 @@
 
 <script lang="ts">
 import {Component, Vue, Prop} from 'vue-property-decorator';
-import {TweenLite} from 'gsap';
+import {TweenLite, Power4} from 'gsap';
 @Component({
     components: {},
 })
 export default class TweenTransition extends Vue {
 
     public show(done: any) {
-        console.log(done);
         const { bar1, bar2, bar3 } = this.$refs;
-        const duration = .2;
+        const duration = .5;
         TweenLite.set(bar1, {x: '0%', width: 0});
         TweenLite.set(bar2, {x: '0%', width: 0});
         TweenLite.set(bar3, {x: '0%', width: 0});
-        TweenLite.to(bar1, duration, {x: '0%', width: '100%', delay: 0, onComplete: done});
-        TweenLite.to(bar2, duration, {x: '0%', width: '100%', delay: duration});
-        TweenLite.to(bar3, duration, {x: '0%', width: '100%', delay: duratio n *1.5});
-        TweenLite.to([bar1, bar2, bar3], duration, {x: '100%', width: '100%', delay: duratio n *2});
+        TweenLite.to(bar1, duration, {x: '0%', width: '100%', ease: Power4.easeOut, delay: 0, onComplete: done});
+        TweenLite.to(bar2, duration, {x: '0%', width: '100%', ease: Power4.easeOut, delay: duration * 1 * .3});
+        TweenLite.to(bar3, duration, {x: '0%', width: '100%', ease: Power4.easeOut, delay: duration * 2 * .3});
+        TweenLite.to([bar1, bar2, bar3], duration, {x: '100%', ease: Power4.easeOut, width: '100%', delay: duration * 3 * .3});
     }
 
     public hide(done: any) {
