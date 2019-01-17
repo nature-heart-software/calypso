@@ -7,27 +7,29 @@
                         <div class="navigation__menu-button pr-cursor-pointer" @click="fullscreen = !fullscreen">
                             <div class="navigation__menu-button__bar" v-for="i in 3"></div>
                         </div>
-                        <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
+                        <Header class="navigation__brand uwu" look="brand">Sweet<br>Trips</Header>
                         <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
-                            <Player class="pr-self-end"></Player>
+                            <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
                         </div>
                     </div>
                     <div class="navigation__screen__bottom">
                         <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
                             <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Highlight</Header>
-                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : $store.state.findings.collection[0].embeds[0].title}}</Header>
+                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
                         </div>
                         <div class="pr-w-1/3">
                             <div class="pr-ratio-1/1">
-                                <div class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : $store.state.findings.collection[0].embeds[0].thumbnail.proxy_url}')`">
+                                    <div :key="$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''" class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''}')`"></div>
 
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="navigation__screen__background">
-
-                        <div class="navigation__screen__background__image" :style="`background-image: url('${$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : $store.state.findings.collection[0].embeds[0].thumbnail.proxy_url}')`"></div>
+                        <TweenTransition ref="background" class="pr-absolute pr-pin">
+                            <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
+                                <img :key="$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''" class="navigation__screen__background__image" :src="$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''">
+                            </transition>
+                        </TweenTransition>
                     </div>
                 </div>
             </div>
@@ -39,18 +41,31 @@
 import {Component, Vue, Prop} from 'vue-property-decorator';
 import Header from '@/components/atoms/Header.vue';
 import Player from '@/components/molecules/Player.vue';
+import TweenTransition from '@/components/atoms/TweenTransition.vue';
+import {TweenLite} from 'gsap';
 @Component({
     components: {
         Header,
         Player,
+        TweenTransitio,n
     },
     computed: {
 
-    }
+    ,}
 })
 export default class Navigation extends Vue {
     private fullscreen: boolean = false;
     private placeholderJPG: string = require('@/assets/placeholder.jpg');
+    public backgroundTransitionEnter(el, done) {
+        (this.$ref.background] as any).hide(done);
+    }
+
+    public backgroundTransitionLeave(el, done) {
+        (this.$ref.background] as any).show(done);
+    }
+    public mounted() {
+        console.log(this.$ref.background]);
+    }
 }
 </script>
 
@@ -114,12 +129,10 @@ export default class Navigation extends Vue {
             overflow: hidden;
             .navigation__screen__background__image {
                 position: absolute;
-                top: -5%;
-                left: -5%;
-                right: -5%;
-                bottom: -5%;
-                background-size: cover;
-                background-position: center;
+                width: 110%;
+                height: 110%;
+                object-fit: cover;
+                object-position: center;
                 filter: blur(60px);
                 /*opacity: .1;*/
             }

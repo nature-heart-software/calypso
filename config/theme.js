@@ -66,7 +66,7 @@ let colors = {
     'secondary': '#3490dc',
     'info': '#3490dc',
     'primary': '#9561e2',
-    'black': '#0C0C0C',
+    'black': '#131424',
 };
 
 module.exports = {

@@ -6,7 +6,6 @@
         .player__picture {
             width: 100px;
             height: 100px;
-            background-color: black ;
             display: flex;
             color: white;
             text-transform: uppercase;
@@ -23,6 +22,12 @@
             font-weight: bold;
             font-size: 14px;
             letter-spacing: .1rem;
+            .player__trackName__link {
+                display: inherit;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
         }
         .player__trackProgress {
             /deep/ {
@@ -49,7 +54,7 @@
             align-items: center;
             display: flex;
             flex-wrap: wrap;
-
+            max-width: calc(100% - 100px);
             .player__controls__buttons {
                 display: flex;
                 .player__controls__button {
@@ -75,8 +80,8 @@
 
 <template>
     <div class="player">
-        <div class="player__controls pr-mr-8 pr-py-2 pr-pt-4">
-            <div class="player__controls__top pr-w-full">
+        <div class="player__controls pr-w-full pr-pr-8 pr-py-2 pr-pt-4">
+            <div class="player__controls__top pr-w-full pr-max-w-full">
                 <div class="player__controls__buttons">
                     <div class="player__controls__button" @click="playPrevious()">
                         <i class="icon ion-md-skip-backward"></i>
@@ -93,10 +98,10 @@
             <div class="player__controls__middle pr-w-full">
                 <div class="player__trackName pr-my-2 pr-mt-0">
                     <div>
-                        <a :title="song.embeds[0].title" :href="song.embeds[0].url" class="pr-text-white hover:pr-text-grey-light pr-overflow-hidden pr-whitespace-no-wrap" target="_blank" v-if="song">{{song.embeds[0].title}}</a>
+                        <a :title="song.embeds[0].title" :href="song.embeds[0].url" class="player__trackName__link pr-text-white hover:pr-text-grey-light" target="_blank" v-if="song">{{song.embeds[0].title}}</a>
                     </div>
                     <div class="pr-leading-none">
-                        <a :title=" song.embeds[0].title" :href="song.embeds[0].author.url" class="pr-text-xs pr-text-grey-light hover:pr-text-grey" target="_blank" v-if="song">{{song.embeds[0].author.name}}</a>
+                        <a :title="song.embeds[0].author.name" :href="song.embeds[0].author.url" class="player__trackName__link pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal" target="_blank" v-if="song">{{song.embeds[0].author.name}}</a>
                     </div>
                 </div>
             </div>
@@ -111,116 +116,116 @@
             </div>
         </div>
         <div class="player__picture">
-            <span>Nothing is playing :(</span>
             <div v-if="song" class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${song.embeds[0].thumbnail.proxy_url}')`"></div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    declare var MediaElementPlayer: any;
-    import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
-    import 'mediaelement/full';
-    import 'mediaelement/build/mediaelementplayer.css';
-    import moment from 'moment';
-    import {findIndex} from 'lodash';
-    import { mapGetters } from 'vuex';
-    @Component({
-        components: {},
-        computed: {
-            // ...mapGetters([
-            //     'player/song'
-            // ])
-        }
-    })
-    export default class Player extends Vue {
-        private isPlaying: any = true;
-        private player: any = null;
-        private trueCurrentTime: any = null;
-        private trueTotalTime: any = null;
+declare var MediaElementPlayer: any;
+import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
+import 'mediaelement/full';
+import 'mediaelement/build/mediaelementplayer.css';
+import moment from 'moment';
+import {findIndex} from 'lodash';
+import { mapGetters } from 'vuex';
+@Component({
+    components: {},
+    computed: {
+        ...mapGetters([
+            'player/song',
+        ]),
+    },
+})
+export default class Player extends Vue {
+    private isPlaying: any = true;
+    private player: any = null;
+    private trueCurrentTime: any = null;
+    private trueTotalTime: any = null;
 
-        get currentTimeFormated() {
-            return moment.utc(this.trueCurrentTime*1000).format('mm:ss');
-        }
+    get currentTimeFormated() {
+        return moment.utc(this.trueCurrentTime * 1000).format('mm:ss');
+    }
 
-        get totalTimeFormated() {
-            return moment.utc(this.trueTotalTime*1000).format('mm:ss');
-        }
+    get totalTimeFormated() {
+        return moment.utc(this.trueTotalTime * 1000).format('mm:ss');
+    }
 
-        get songIndex() {
-            return findIndex(this.$store.state.findings.collection, (item: any) => item === this.song);
-        }
+    get songIndex() {
+        return findIndex(this.$store.state.findings.collection, (item: any) => item === this.song);
+    }
 
-        get previousSong() {
-            return this.$store.state.findings.collection[this.songIndex-1];
-        }
+    get previousSong() {
+        return this.$store.state.findings.collection[this.songIndex - 1];
+    }
 
-        get nextSong() {
-            return this.$store.state.findings.collection[this.songIndex+1];
-        }
+    get nextSong() {
+        return this.$store.state.findings.collection[this.songIndex + 1];
+    }
 
-        get song() {
-            return this.$store.state.player.song;
-        }
+    get song() {
+        return this['player/song'];
+    }
 
-        @Watch('song')
-        onSongChange() {
-            console.log('song changed');
-            this.setSong(this.song.embeds[0].url);
-        }
-        private pause() {
-            this.player.pause();
-            this.isPlaying = false;
-        }
+    @Watch('song')
+    public onSongChange() {
+        console.log('song changed');
+        this.setSong(this.song.embeds[0].url);
+    }
 
-        private play() {
-            if (this.songIndex < 0 ) {
-                this.$store.dispatch('player/play', this.$store.state.findings.collection[0]);
-            }
-            this.player.play();
-            this.isPlaying = true;
-        }
+    private pause() {
+        this.player.pause();
+        this.isPlaying = false;
+    }
 
-        private playPrevious() {
-            this.$store.dispatch('player/play', this.previousSong);
+    private play() {
+        if (this.songIndex < 0 ) {
+            this.$store.dispatch('player/play', this.$store.state.findings.collection[0]);
         }
+        this.player.play();
+        this.isPlaying = true;
+    }
 
-        private playNext() {
-            this.$store.dispatch('player/play', this.nextSong);
-        }
+    private playPrevious() {
+        this.$store.dispatch('player/play', this.previousSong);
+    }
 
-        private resumePause() {
-            if(this.isPlaying) {
-                this.pause();
-            } else {
-                this.play();
-            }
-        }
+    private playNext() {
+        this.$store.dispatch('player/play', this.nextSong);
+    }
 
-        private setSong(url: string) {
-            this.player.setSrc(url);
-            this.player.play();
-        }
-        private mounted() {
-            const __this = this;
-            this.player = new MediaElementPlayer('player__me', {
-                success(mediaElement: any, originalNode: any, instance: any) {
-                    mediaElement.addEventListener('timeupdate', () => {
-                        const currentTime = __this.trueCurrentTime = __this.player.getCurrentTime();
-                        const totalTime = __this.trueTotalTime =__this.player.duration;
-                        if (Math.floor(currentTime) === Math.floor(totalTime) && typeof __this.nextSong) {
-                            console.log('yeet');
-                            __this.playNext();
-                        }
-                    });
-                },
-                // ended() {
-                //     console.log('ended');
-                //     if (this.nextSong) {
-                //         __this.playNext();
-                //     }
-                // }
-            });
+    private resumePause() {
+        if (this.isPlaying) {
+            this.pause();
+        } else {
+            this.play();
         }
     }
+
+    private setSong(url: string) {
+        this.player.setSrc(url);
+        this.player.play();
+    }
+    private mounted() {
+        const __this = this;
+        this.player = new MediaElementPlayer('player__me', {
+            success(mediaElement: any, originalNode: any, instance: any) {
+                mediaElement.addEventListener('timeupdate', () => {
+                    const currentTime = __this.trueCurrentTime = __this.player.getCurrentTime();
+                    const totalTime = __this.trueTotalTime = __this.player.duration;
+                    if (Math.floor(currentTime) === Math.floor(totalTime) && typeof __this.nextSong) {
+                        console.log('yeet');
+                        __this.playNext();
+                    }
+                });
+            },
+            // ended() {
+            //     console.log('ended');
+            //     if (this.nextSong) {
+            //         __this.playNext();
+            //     }
+            // }
+        });
+    }
+}
 </script>
