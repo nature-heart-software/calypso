@@ -5,7 +5,7 @@
                 <Header look="main">Featured</Header>
             </template>
             <template slot="content">
-                <ListItem :index="index+1" :key="index" v-for="(song, index) in $store.state.findings.collection" :song="song"></ListItem>
+                <ListItem :key="index" v-for="(song, index) in $store.state.findings.collection" :song="song"></ListItem>
             </template>
         </PageList>
     </div>

@@ -15,13 +15,15 @@
         },
     })
     export default class App extends Vue {
-
+        mounted() {
+        }
     }
 </script>
 
 <style lang="scss">
     body {
         background-color: config('colors.black');
+        //height: (948px*3)+1;
     }
 #app {
     /*height: 100vh;*/
