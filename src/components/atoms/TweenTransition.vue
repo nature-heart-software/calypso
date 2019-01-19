@@ -24,10 +24,12 @@
                 background-color: #6e22ec;
             }
             .tweenTransition__bar2 {
-                background-color: #3ce3cc;
+                /*background-color: #3ce3cc;*/
+                background-color: config('colors.black');
             }
             .tweenTransition__bar3 {
-                background-color: config('colors.black');
+                /*background-color: config('colors.black');*/
+                background-color: #3ce3cc;
             }
         }
     }
