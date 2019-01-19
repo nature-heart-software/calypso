@@ -11,7 +11,7 @@
         }
 
         &--main {
-            font-size: 64px;
+            font-size: 48px;
             line-height: 1.2;
             clear: both;
             .header__bar {

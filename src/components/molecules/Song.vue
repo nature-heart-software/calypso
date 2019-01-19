@@ -10,6 +10,11 @@
         .song__container {
             display: flex;
         }
+        .song__background--wrapper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
         .song__background {
             position: absolute;
             width: 45%;
@@ -57,6 +62,8 @@
             .song__content__title {
                 position: relative;
                 flex: 1;
+                display: flex;
+                align-items: center;
                 .song__content__title__header {
                     position: absolute;
                     top: 0;
@@ -70,8 +77,10 @@
 
 <template>
     <div class="song" @click="play()">
-        <div class="song__background">
-            <div class="song__background__image" :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
+        <div class="song__background--wrapper"  ref="background">
+            <div class="song__background">
+                <div class="song__background__image" :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
+            </div>
         </div>
         <div class="container song__container">
             <div class="song__content">
@@ -89,7 +98,7 @@
                     </div>
                 </div>
                 <div class="song__content__title">
-                    <Header class="song__content__title__header" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
+                    <Header ref="title" class="song__content__title__header" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
                 </div>
             </div>
         </div>
@@ -97,8 +106,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Prop} from 'vue-property-decorator';
+import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
 import Header from '@/components/atoms/Header.vue';
+import {TimelineLite} from 'gsap';
 
 @Component({
     components: {
@@ -108,12 +118,37 @@ import Header from '@/components/atoms/Header.vue';
 export default class Song extends Vue {
     @Prop({required: true}) private song!: any;
     @Prop({required: true}) private scrollPercentage!: number;
-
+    private tl: any = new TimelineLite({paused: true});
+    @Watch('scrollPercentage')
+    onScrollPercentageChange() {
+        let percentage;
+        if (this.scrollPercentage >= 100) {
+            percentage = 100;
+        } else if (this.scrollPercentage <= 0) {
+            percentage = 0;
+        } else {
+            percentage = this.scrollPercentage;
+        }
+        this.tl.progress(percentage/100);
+    }
     private isEven(n: number) {
         return n % 2 == 0;
     }
     private play() {
         this.$store.dispatch('player/play', this.song);
+    }
+    private mounted() {
+        const {title, background} = this.$refs;
+        const titleYValue = 400;
+        const backgroundYValue = 50;
+        this.tl
+            .add("start")
+            .set([title.$el, background], {display: 'none'})
+            .set(title.$el, {y: `-${titleYValue}px`})
+            .set(background, {y: `-${backgroundYValue}px`})
+            .from(title.$el, 1, {display: 'block', y: `${titleYValue}px`}, "start")
+            .from(background, 1, {display: 'block', y: `${backgroundYValue}px`}, "start")
+            .set([title.$el, background], {display: 'none'})
     }
 }
 </script>
