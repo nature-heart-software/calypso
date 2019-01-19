@@ -37,7 +37,7 @@
                     border-radius: 0;
                     .el-slider__bar {
                         border-radius: 0;
-                        @apply bg-grey-darker;
+                        background-color: #6e22ec;
                     }
                     .el-slider__button {
                         height: 12px;
@@ -116,7 +116,11 @@
             </div>
         </div>
         <div class="player__picture">
-            <div v-if="song" class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${song.embeds[0].thumbnail.proxy_url}')`"></div>
+            <TweenTransition ref="cover" class="pr-absolute pr-pin">
+                <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
+                    <div :key="song ? song.embeds[0].thumbnail.proxy_url : ''" class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${song ? song.embeds[0].thumbnail.proxy_url : ''}')`"></div>
+                </transition>
+            </TweenTransition>
         </div>
     </div>
 </template>
@@ -129,8 +133,11 @@ import 'mediaelement/build/mediaelementplayer.css';
 import moment from 'moment';
 import {findIndex} from 'lodash';
 import { mapGetters } from 'vuex';
+import TweenTransition from '@/components/atoms/TweenTransition.vue';
 @Component({
-    components: {},
+    components: {
+        TweenTransition,
+    },
     computed: {
         ...mapGetters([
             'player/song',
@@ -165,6 +172,14 @@ export default class Player extends Vue {
 
     get song() {
         return this['player/song'];
+    }
+
+    public coverTransitionEnter(el, done) {
+        (this.$refs['cover'] as any).enter(done);
+    }
+
+    public coverTransitionLeave(el, done) {
+        (this.$refs['cover'] as any).leave(done);
     }
 
     @Watch('song')

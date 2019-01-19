@@ -7,7 +7,7 @@
                         <div class="navigation__menu-button pr-cursor-pointer" @click="fullscreen = !fullscreen">
                             <div class="navigation__menu-button__bar" v-for="i in 3"></div>
                         </div>
-                        <Header class="navigation__brand uwu" look="brand">Sweet<br>Trips</Header>
+                        <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
                         <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
                             <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
                         </div>
@@ -19,15 +19,18 @@
                         </div>
                         <div class="pr-w-1/3">
                             <div class="pr-ratio-1/1">
-                                    <div :key="$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''" class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${$store.state.player.song ? $store.state.player.song.embeds[0].thumbnail.proxy_url : ''}')`"></div>
-
+                                <TweenTransition ref="cover" class="pr-absolute pr-pin">
+                                    <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
+                                        <img :key="cover" class="pr-fit-cover pr-w-full pr-h-full" :src="cover">
+                                    </transition>
+                                </TweenTransition>
                             </div>
                         </div>
                     </div>
                     <div class="navigation__screen__background">
                         <TweenTransition ref="background" class="pr-absolute pr-pin">
                             <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
-                                <img :key="this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : ''" class="navigation__screen__background__image" :src="this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : ''">
+                                <img :key="cover" class="navigation__screen__background__image" :src="cover">
                             </transition>
                         </TweenTransition>
                     </div>
@@ -60,14 +63,18 @@ export default class Navigation extends Vue {
         return this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : '';
     }
     public backgroundTransitionEnter(el, done) {
-        (this.$refs['background'] as any).hide(done);
+        (this.$refs['background'] as any).enter(done);
     }
 
     public backgroundTransitionLeave(el, done) {
-        (this.$refs['background'] as any).show(done);
-        done();
+        (this.$refs['background'] as any).leave(done);
     }
-    public mounted() {
+    public coverTransitionEnter(el, done) {
+        (this.$refs['cover'] as any).enter(done);
+    }
+
+    public coverTransitionLeave(el, done) {
+        (this.$refs['cover'] as any).leave(done);
     }
 }
 </script>
