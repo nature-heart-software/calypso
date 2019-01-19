@@ -30,7 +30,7 @@
                     <div class="navigation__screen__background">
                         <TweenTransition ref="background" class="pr-absolute pr-pin">
                             <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
-                                <img :key="cover" class="navigation__screen__background__image" :src="cover">
+                                <BluredBackground :key="cover" :image="cover" look="heavy" class="pr-absolute pr-pin pr-opacity-50"></BluredBackground>
                             </transition>
                         </TweenTransition>
                     </div>
@@ -44,6 +44,7 @@
 import {Component, Vue, Prop} from 'vue-property-decorator';
 import Header from '@/components/atoms/Header.vue';
 import Player from '@/components/molecules/Player.vue';
+import BluredBackground from '@/components/molecules/BluredBackground.vue';
 import TweenTransition from '@/components/atoms/TweenTransition.vue';
 import {TweenLite} from 'gsap';
 @Component({
@@ -51,6 +52,7 @@ import {TweenLite} from 'gsap';
         Header,
         Player,
         TweenTransition,
+        BluredBackground
     },
     computed: {
 

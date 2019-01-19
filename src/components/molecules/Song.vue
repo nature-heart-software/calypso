@@ -23,15 +23,16 @@
             transform: translate(0, -50%);
             overflow: hidden;
             opacity: .3;
-            .song__background__image {
-                position: absolute;
-                top: -5%;
-                left: -5%;
-                right: -5%;
-                bottom: -5%;
-                background-size: cover;
-                filter: blur(10px);
-            }
+            transition: all .6s cubic-bezier(.215, .61, .355, 1)
+            /*<!--.song__background__image {-->*/
+                /*<!--position: absolute;-->*/
+                /*<!--top: -5%;-->*/
+                /*<!--left: -5%;-->*/
+                /*<!--right: -5%;-->*/
+                /*<!--bottom: -5%;-->*/
+                /*<!--background-size: cover;-->*/
+                /*<!--filter: blur(10px);-->*/
+            /*<!--}-->*/
         }
         .song__content__front {
             display: flex;
@@ -71,24 +72,30 @@
                 }
             }
         }
+        &--hover {
+            cursor: pointer;
+            .song__background {
+                height: 90%;
+                width: 50%;
+                opacity: .5;
+            }
+        }
     }
 
 </style>
 
 <template>
-    <div class="song" @click="play()">
+    <div ref="song" class="song" :class="{'song--hover': hover}" @click="play()">
         <div class="song__background--wrapper"  ref="background">
-            <div class="song__background">
-                <div class="song__background__image" :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
-            </div>
+            <BluredBackground @mouseenter.native="hover = true" @mouseleave.native="hover = false" class="song__background" :image="song.embeds[0].thumbnail.url"></BluredBackground>
         </div>
         <div class="container song__container">
             <div class="song__content">
                 <div class="song__content__front">
-                    <div class="pr-w-full pr-relative pr-pr-lg">
-                        <div class="pr-ratio-1/1 pr-bg-cover pr-bg-center"
+                    <div class="pr-w-full pr-relative pr-pr-lg pr-pointer-events-none">
+                        <div @mouseenter="hover = true" @mouseleave="hover = false" class="pr-ratio-1/1 pr-bg-cover pr-bg-center pr-pointer-events-auto"
                              :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
-                        <div class="song__content__user pr-absolute pr-pin-bottom">
+                        <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__user pr-absolute pr-pin-bottom pr-pointer-events-auto">
                             <div class="song__content__user__picture" :style="`background-image: url(https://cdn.discordapp.com/avatars/${song.author.id}/${song.author.avatar}.jpg)`"></div>
                             <div class="song__content__user__name">
                                 <Header class="pr-capitalize">{{song.author.username}}<br><span class="pr-font-normal">Shared</span>
@@ -97,7 +104,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="song__content__title">
+                <div class="song__content__title pr-pointer-events-none">
                     <Header ref="title" class="song__content__title__header" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
                 </div>
             </div>
@@ -108,17 +115,20 @@
 <script lang="ts">
 import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
 import Header from '@/components/atoms/Header.vue';
-import {TimelineLite} from 'gsap';
+import BluredBackground from '@/components/molecules/BluredBackground.vue';
+import {TimelineLite, TweenLite} from 'gsap';
 
 @Component({
     components: {
         Header,
+        BluredBackground
     },
 })
 export default class Song extends Vue {
     @Prop({required: true}) private song!: any;
     @Prop({required: true}) private scrollPercentage!: number;
     private tl: any = new TimelineLite({paused: true});
+    private hover: boolean = false;
     @Watch('scrollPercentage')
     onScrollPercentageChange() {
         let percentage;
@@ -138,7 +148,7 @@ export default class Song extends Vue {
         this.$store.dispatch('player/play', this.song);
     }
     private mounted() {
-        const {title, background} = this.$refs;
+        const {title, background} = (this.$refs as any);
         const titleYValue = 400;
         const backgroundYValue = 50;
         this.tl
@@ -149,6 +159,28 @@ export default class Song extends Vue {
             .from(title.$el, 1, {display: 'block', y: `${titleYValue}px`}, "start")
             .from(background, 1, {display: 'block', y: `${backgroundYValue}px`}, "start")
             .set([title.$el, background], {display: 'none'})
+        this.bindListeners();
+    }
+    private onMouseMove(e) {
+        const {song} = this.$refs;
+        const viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+        const viewWidth = Math.max(document.documentElement.clientWidth, window.innerWidth);
+        const percentageX = e.clientX / viewWidth * 100;
+        const percentageY = e.clientY / viewHeight * 100;
+        // TODO: Maths for this
+        TweenLite.to(song, 1, {x: `${-(percentageX - 50)/50}%`, y: `${-(percentageY - 50)/10}%`});
+    }
+
+    private beforeDestroy() {
+        this.removeListeners();
+    }
+
+    private bindListeners() {
+        window.addEventListener('mousemove', this.onMouseMove);
+    }
+
+    private removeListeners() {
+        window.removeEventListener('mousemove', this.onMouseMove);
     }
 }
 </script>
