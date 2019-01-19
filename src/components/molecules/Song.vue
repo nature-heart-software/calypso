@@ -42,6 +42,9 @@
             width: 100%;
             display: flex;
             align-self: center;
+            .song__content__cover {
+                box-shadow: 0 0 150px rgba(0,0,0,1);
+            }
             .song__content__user {
                 display: flex;
                 transform: translate(0, -50%);
@@ -93,7 +96,7 @@
             <div class="song__content">
                 <div class="song__content__front">
                     <div class="pr-w-full pr-relative pr-pr-lg pr-pointer-events-none">
-                        <div @mouseenter="hover = true" @mouseleave="hover = false" class="pr-ratio-1/1 pr-bg-cover pr-bg-center pr-pointer-events-auto"
+                        <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__cover pr-ratio-1/1 pr-bg-cover pr-bg-center pr-pointer-events-auto"
                              :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
                         <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__user pr-absolute pr-pin-bottom pr-pointer-events-auto">
                             <div class="song__content__user__picture" :style="`background-image: url(https://cdn.discordapp.com/avatars/${song.author.id}/${song.author.avatar}.jpg)`"></div>
