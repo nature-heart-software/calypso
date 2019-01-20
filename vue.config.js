@@ -7,7 +7,7 @@ const auth = require('./auth.json');
 const JsonSassPlugin = require('@bit/wurielle.pristine.webpack.json-sass-plugin');
 
 module.exports = {
-    baseUrl: '/',
+    baseUrl: './',
     chainWebpack: config => {
         // vue inspect --plugins
         config
