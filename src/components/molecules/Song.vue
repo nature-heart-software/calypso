@@ -154,17 +154,24 @@ export default class Song extends Vue {
         }
     }
     private mounted() {
-        const {title, background} = (this.$refs as any);
+        const {title, background, song} = (this.$refs as any);
         const titleYValue = 400;
         const backgroundYValue = 50;
+        // const songXValue = 200;
         this.tl
             .add("start")
             .set([title.$el, background], {display: 'none'})
             .set(title.$el, {y: `-${titleYValue}px`})
             .set(background, {y: `-${backgroundYValue}px`})
+            // .set(song, {left: `-${songXValue}px`})
+            // .from(song, .5, {left: 0}, "start")
+            // .from(song, .5, {left: `-${songXValue}px`}, "start+=.5")
             .from(title.$el, 1, {display: 'block', y: `${titleYValue}px`}, "start")
             .from(background, 1, {display: 'block', y: `${backgroundYValue}px`}, "start")
             .set([title.$el, background], {display: 'none'})
+            // .set(song, {left: `-${songXValue}px`})
+            .progress(0);
+        ;
         this.bindListeners();
     }
     private onMouseMove(e) {
