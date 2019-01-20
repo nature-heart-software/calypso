@@ -54,7 +54,6 @@ export default class tweenTextTransition extends Vue {
         TweenLite.set(barGroup, {x: '0%'});
         TweenLite.to(bar1, duration, {width: '100%', ease: Expo.easeInOut, onComplete: isDone});
         function isDone() {
-            console.log('animation is done');
             done();
         }
     }
@@ -63,7 +62,6 @@ export default class tweenTextTransition extends Vue {
         const duration = 1;
         TweenLite.to(barGroup, duration, {x: '101%', ease: Expo.easeOut, delay: duration * .87, onComplete: isDone});
         function isDone() {
-            console.log('animation is done');
             done();
         }
     }

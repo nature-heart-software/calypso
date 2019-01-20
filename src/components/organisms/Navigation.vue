@@ -135,16 +135,16 @@
                             <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
                         </div>
                     </div>
-                    <div class="navigation__screen__middle">
-                        <ul>
-                            <li>
-                                <router-link :to="{name: 'home'}">Home</router-link>
-                            </li>
-                            <li>
-                                <router-link :to="{name: 'about'}">About</router-link>
-                            </li>
-                        </ul>
-                    </div>
+                    <!--<div class="navigation__screen__middle">-->
+                        <!--<ul>-->
+                            <!--<li>-->
+                                <!--<router-link :to="{name: 'home'}">Home</router-link>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<router-link :to="{name: 'about'}">About</router-link>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
                     <div class="navigation__screen__bottom">
                         <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
                             <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>

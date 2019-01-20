@@ -239,7 +239,6 @@
 
         @Watch('song')
         public onSongChange() {
-            console.log('song changed');
             this.setSong(this.song.embeds[0].url);
         }
 
