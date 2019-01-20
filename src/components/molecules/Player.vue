@@ -44,7 +44,7 @@
                         width: 12px;
                         border: 0;
                         background-color: white;
-                        box-shadow: 0 2px 4px 0 rgba(0,0,0,1);
+                        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 1);
                     }
                 }
             }
@@ -97,18 +97,43 @@
             </div>
             <div class="player__controls__middle pr-w-full">
                 <div class="player__trackName">
-                    <div>
-                        <a :title="song.embeds[0].title" :href="song.embeds[0].url" class="player__trackName__link pr-text-white hover:pr-text-grey-light" target="_blank" v-if="song">{{song.embeds[0].title}}</a>
+                    <div class="player__trackName__link">
+                        <TweenTextTransition ref="text1" class="pr-inline">
+                            <transition @enter="text1TransitionEnter" @leave="text1TransitionLeave" :css="false"
+                                        mode="out-in">
+                                <a :key="song.id" :title="song.embeds[0].title" :href="song.embeds[0].url"
+                                   class="pr-text-white hover:pr-text-grey-light"
+                                   target="_blank" v-if="song">{{song.embeds[0].title}}</a>
+                            </transition>
+                        </TweenTextTransition>
                     </div>
                     <div class="pr-flex">
-                        <a :title="song.embeds[0].author.name" :href="song.embeds[0].author.url" class="player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal" target="_blank" v-if="song">{{song.embeds[0].author.name}}</a>
-                        <strong class="pr-flex-1 pr-text-right pr-text-xs pr-text-grey-light pr-font-mono">{{currentTimeFormated}} / {{totalTimeFormated}}</strong>
+                        <a :title="song.embeds[0].author.name" :href="song.embeds[0].author.url"
+                           class="player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal"
+                           target="_blank" v-if="song">
+                            <TweenTextTransition ref="text2" class="pr-inline">
+                                <transition @enter="text2TransitionEnter" @leave="text2TransitionLeave" :css="false"
+                                            mode="out-in">
+                                    <span :key="song.id">{{song.embeds[0].author.name}}</span>
+                                </transition>
+                            </TweenTextTransition>
+                        </a>
+                        <strong v-if="song"
+                                class="pr-flex-1 pr-text-right pr-text-xs pr-text-grey-light pr-font-mono">
+                            <TweenTextTransition ref="text3" class="pr-inline">
+                                <transition @enter="text3TransitionEnter" @leave="text3TransitionLeave" :css="false"
+                                            mode="out-in">
+                                    <span :key="song.id">{{currentTimeFormated}} / {{totalTimeFormated}}</span>
+                                </transition>
+                            </TweenTextTransition>
+                        </strong>
                     </div>
                 </div>
             </div>
             <div class="player__controls__bottom pr-w-full">
                 <div class="player__trackProgress">
-                    <el-slider v-model="trueCurrentTime" :min="0" :max="trueTotalTime" :show-tooltip="false" @change="setTime" @mousedown.native="isSliding = true"></el-slider>
+                    <el-slider v-model="trueCurrentTime" :min="0" :max="trueTotalTime" :show-tooltip="false"
+                               @change="setTime" @mousedown.native="isSliding = true"></el-slider>
                 </div>
             </div>
             <div class="pr-absolute pr-overflow-hidden" style="width: 0; height: 0;">
@@ -118,7 +143,9 @@
         <div class="player__picture">
             <TweenTransition ref="cover" class="pr-absolute pr-pin">
                 <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
-                    <div :key="song ? song.embeds[0].thumbnail.proxy_url : ''" class="pr-absolute pr-pin pr-bg-cover pr-bg-center" :style="`background-image: url('${song ? song.embeds[0].thumbnail.proxy_url : ''}')`"></div>
+                    <div :key="song ? song.embeds[0].thumbnail.proxy_url : ''"
+                         class="pr-absolute pr-pin pr-bg-cover pr-bg-center"
+                         :style="`background-image: url('${song ? song.embeds[0].thumbnail.proxy_url : ''}')`"></div>
                 </transition>
             </TweenTransition>
         </div>
@@ -126,142 +153,170 @@
 </template>
 
 <script lang="ts">
-declare var MediaElementPlayer: any;
-import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
-import 'mediaelement/full';
-import 'mediaelement/build/mediaelementplayer.css';
-import moment from 'moment';
-import {findIndex} from 'lodash';
-import { mapGetters } from 'vuex';
-import TweenTransition from '@/components/atoms/TweenTransition.vue';
-@Component({
-    components: {
-        TweenTransition,
-    },
-    computed: {
-        ...mapGetters([
-            'player/song',
-        ]),
-    },
-})
-export default class Player extends Vue {
-    private isPlaying: any = true;
-    private player: any = null;
-    private trueCurrentTime: any = null;
-    private trueTotalTime: any = null;
-    private isSliding: boolean = false;
+    declare var MediaElementPlayer: any;
+    import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
+    import 'mediaelement/full';
+    import 'mediaelement/build/mediaelementplayer.css';
+    import moment from 'moment';
+    import {findIndex} from 'lodash';
+    import {mapGetters} from 'vuex';
+    import TweenTransition from '@/components/atoms/TweenTransition.vue';
+    import TweenTextTransition from '@/components/atoms/TweenTextTransition.vue';
 
-    get currentTimeFormated() {
-        return moment.utc(this.trueCurrentTime * 1000).format('mm:ss');
-    }
+    @Component({
+        components: {
+            TweenTransition,
+            TweenTextTransition
+        },
+        computed: {
+            ...mapGetters([
+                'player/song',
+            ]),
+        },
+    })
+    export default class Player extends Vue {
+        private isPlaying: any = true;
+        private player: any = null;
+        private trueCurrentTime: any = null;
+        private trueTotalTime: any = null;
+        private isSliding: boolean = false;
 
-    get totalTimeFormated() {
-        return moment.utc(this.trueTotalTime * 1000).format('mm:ss');
-    }
-
-    get songIndex() {
-        return findIndex(this.$store.state.findings.collection, (item: any) => item === this.song);
-    }
-
-    get previousSong() {
-        return this.$store.state.findings.collection[this.songIndex - 1];
-    }
-
-    get nextSong() {
-        return this.$store.state.findings.collection[this.songIndex + 1];
-    }
-
-    get song() {
-        return this['player/song'];
-    }
-
-    public coverTransitionEnter(el, done) {
-        (this.$refs.cover as any).enter(done);
-    }
-
-    public coverTransitionLeave(el, done) {
-        (this.$refs.cover as any).leave(done);
-    }
-
-    @Watch('song')
-    public onSongChange() {
-        console.log('song changed');
-        this.setSong(this.song.embeds[0].url);
-    }
-
-    private pause() {
-        this.player.pause();
-        this.isPlaying = false;
-    }
-
-    private play() {
-        if (this.songIndex < 0 ) {
-            this.$store.dispatch('player/play', this.$store.state.findings.collection[0]);
+        get currentTimeFormated() {
+            return moment.utc(this.trueCurrentTime * 1000).format('mm:ss');
         }
-        this.player.play();
-        this.isPlaying = true;
-    }
 
-    private playPrevious() {
-        this.$store.dispatch('player/play', this.previousSong);
-    }
+        get totalTimeFormated() {
+            return moment.utc(this.trueTotalTime * 1000).format('mm:ss');
+        }
 
-    private playNext() {
-        this.$store.dispatch('player/play', this.nextSong);
-    }
+        get songIndex() {
+            return findIndex(this.$store.state.findings.collection, (item: any) => item === this.song);
+        }
 
-    private resumePause() {
-        if (this.isPlaying) {
-            this.pause();
-        } else {
-            this.play();
+        get previousSong() {
+            return this.$store.state.findings.collection[this.songIndex - 1];
+        }
+
+        get nextSong() {
+            return this.$store.state.findings.collection[this.songIndex + 1];
+        }
+
+        get song() {
+            return this['player/song'];
+        }
+
+        public coverTransitionEnter(el, done) {
+            (this.$refs.cover as any).enter(done);
+        }
+
+        public coverTransitionLeave(el, done) {
+            (this.$refs.cover as any).leave(done);
+        }
+
+        public text1TransitionEnter(el, done) {
+            (this.$refs.text1 as any).enter(done);
+        }
+
+        public text1TransitionLeave(el, done) {
+            (this.$refs.text1 as any).leave(done);
+        }
+
+        public text2TransitionEnter(el, done) {
+            (this.$refs.text2 as any).enter(done);
+        }
+
+        public text2TransitionLeave(el, done) {
+            (this.$refs.text2 as any).leave(done);
+        }
+
+        public text3TransitionEnter(el, done) {
+            (this.$refs.text3 as any).enter(done);
+        }
+
+        public text3TransitionLeave(el, done) {
+            (this.$refs.text3 as any).leave(done);
+        }
+
+        @Watch('song')
+        public onSongChange() {
+            console.log('song changed');
+            this.setSong(this.song.embeds[0].url);
+        }
+
+        private pause() {
+            this.player.pause();
+            this.isPlaying = false;
+        }
+
+        private play() {
+            if (this.songIndex < 0) {
+                this.$store.dispatch('player/play', this.$store.state.findings.collection[0]);
+            }
+            this.player.play();
+            this.isPlaying = true;
+        }
+
+        private playPrevious() {
+            this.$store.dispatch('player/play', this.previousSong);
+        }
+
+        private playNext() {
+            this.$store.dispatch('player/play', this.nextSong);
+        }
+
+        private resumePause() {
+            if (this.isPlaying) {
+                this.pause();
+            } else {
+                this.play();
+            }
+        }
+
+        private setSong(url: string) {
+            this.player.setSrc(url);
+            this.player.play();
+            this.isPlaying = true;
+            this.player.setCurrentTime(0);
+        }
+
+        private setTime(time: number) {
+            this.player.setCurrentTime(time);
+            this.isSliding = false;
+        }
+
+        private mounted() {
+            const __this = this;
+            this.player = new MediaElementPlayer('player__me', {
+                success(mediaElement: any, originalNode: any, instance: any) {
+                    mediaElement.addEventListener('timeupdate', () => {
+                        const currentTime = __this.player.getCurrentTime();
+                        const totalTime = __this.player.duration;
+                        if (!__this.isSliding) {
+                            __this.trueCurrentTime = currentTime;
+                            __this.trueTotalTime = totalTime;
+                        }
+                    });
+                    mediaElement.addEventListener('ended', () => {
+                        __this.playNext();
+                    });
+                },
+            });
+            this.bindListeners();
+        }
+
+        private onMouseUp() {
+        }
+
+        private bindListeners() {
+            // window.addEventListener('mouseup', this.onMouseUp)
+        }
+
+        private removeListeners() {
+
+        }
+
+        private beforeDestroy() {
+            this.removeListeners();
         }
     }
-
-    private setSong(url: string) {
-        this.player.setSrc(url);
-        this.player.play();
-        this.player.setCurrentTime(0);
-    }
-
-    private setTime(time: number) {
-        this.player.setCurrentTime(time);
-        this.isSliding = false;
-    }
-
-    private mounted() {
-        const __this = this;
-        this.player = new MediaElementPlayer('player__me', {
-            success(mediaElement: any, originalNode: any, instance: any) {
-                mediaElement.addEventListener('timeupdate', () => {
-                    const currentTime = __this.player.getCurrentTime();
-                    const totalTime = __this.player.duration;
-                    if (!__this.isSliding) {
-                        __this.trueCurrentTime = currentTime;
-                        __this.trueTotalTime = totalTime;
-                    }
-                });
-                mediaElement.addEventListener('ended', () => {
-                    __this.playNext();
-                });
-            },
-        });
-        this.bindListeners();
-    }
-
-    private onMouseUp() {
-    }
-
-    private bindListeners() {
-        // window.addEventListener('mouseup', this.onMouseUp)
-    }
-
-    private removeListeners() {
-
-    }
-
-    private beforeDestroy() {
-        this.removeListeners();
-    }
-}
 </script>

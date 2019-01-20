@@ -1,86 +1,3 @@
-<template>
-    <header class="navigation" :class="{'navigation--fullscreen': fullscreen}">
-        <nav class="container pr-flex">
-            <div class="navigation__container">
-                <div class="navigation__screen">
-                    <div class="navigation__screen__top">
-                        <div class="navigation__menu-button pr-cursor-pointer" @click="fullscreen = !fullscreen">
-                            <div class="navigation__menu-button__bar" v-for="i in 3"></div>
-                        </div>
-                        <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
-                        <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
-                            <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
-                        </div>
-                    </div>
-                    <div class="navigation__screen__bottom">
-                        <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
-                            <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Highlight</Header>
-                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
-                        </div>
-                        <div class="pr-w-1/3">
-                            <div class="pr-ratio-1/1">
-                                <TweenTransition ref="cover" class="pr-absolute pr-pin">
-                                    <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
-                                        <img :key="cover" class="pr-fit-cover pr-w-full pr-h-full" :src="cover">
-                                    </transition>
-                                </TweenTransition>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="navigation__screen__background">
-                        <TweenTransition ref="background" class="pr-absolute pr-pin">
-                            <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
-                                <BluredBackground :key="cover" :image="cover" look="heavy" class="pr-absolute pr-pin pr-opacity-50"></BluredBackground>
-                            </transition>
-                        </TweenTransition>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-</template>
-
-<script lang="ts">
-import {Component, Vue, Prop} from 'vue-property-decorator';
-import Header from '@/components/atoms/Header.vue';
-import Player from '@/components/molecules/Player.vue';
-import BluredBackground from '@/components/molecules/BluredBackground.vue';
-import TweenTransition from '@/components/atoms/TweenTransition.vue';
-import {TweenLite} from 'gsap';
-@Component({
-    components: {
-        Header,
-        Player,
-        TweenTransition,
-        BluredBackground
-    },
-    computed: {
-
-    },
-})
-export default class Navigation extends Vue {
-    private fullscreen: boolean = false;
-    private placeholderJPG: string = require('@/assets/placeholder.jpg');
-    get cover() {
-        return this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : '';
-    }
-    public backgroundTransitionEnter(el, done) {
-        (this.$refs['background'] as any).enter(done);
-    }
-
-    public backgroundTransitionLeave(el, done) {
-        (this.$refs['background'] as any).leave(done);
-    }
-    public coverTransitionEnter(el, done) {
-        (this.$refs['cover'] as any).enter(done);
-    }
-
-    public coverTransitionLeave(el, done) {
-        (this.$refs['cover'] as any).leave(done);
-    }
-}
-</script>
-
 <style lang="scss" scoped>
     $navigation-height: 100px;
     .navigation {
@@ -119,7 +36,12 @@ export default class Navigation extends Vue {
                 display: flex;
                 align-items: center;
             }
-            .navigation__screen__bottom{
+            .navigation__screen__middle {
+                position: absolute;
+                top: 100px;
+                width: 100%;
+            }
+            .navigation__screen__bottom {
                 transition: all .5s cubic-bezier(.165, .84, .44, 1);
                 opacity: 0;
                 display: flex;
@@ -198,3 +120,94 @@ export default class Navigation extends Vue {
         }
     }
 </style>
+
+<template>
+    <header class="navigation" :class="{'navigation--fullscreen': $store.state.navigation.fullscreen}">
+        <nav class="container pr-flex">
+            <div class="navigation__container">
+                <div class="navigation__screen">
+                    <div class="navigation__screen__top">
+                        <div class="navigation__menu-button pr-cursor-pointer" @click="$store.dispatch('navigation/toggleFullscreen')">
+                            <div class="navigation__menu-button__bar" v-for="i in 3"></div>
+                        </div>
+                        <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
+                        <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
+                            <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
+                        </div>
+                    </div>
+                    <div class="navigation__screen__middle">
+                        <ul>
+                            <li>
+                                <router-link :to="{name: 'home'}">Home</router-link>
+                            </li>
+                            <li>
+                                <router-link :to="{name: 'about'}">About</router-link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="navigation__screen__bottom">
+                        <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
+                            <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>
+                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
+                        </div>
+                        <div class="pr-w-1/3">
+                            <div class="pr-ratio-1/1">
+                                <TweenTransition ref="cover" class="pr-absolute pr-pin">
+                                    <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
+                                        <img :key="cover" class="pr-fit-cover pr-w-full pr-h-full" :src="cover">
+                                    </transition>
+                                </TweenTransition>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navigation__screen__background">
+                        <TweenTransition ref="background" class="pr-absolute pr-pin">
+                            <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
+                                <BluredBackground :key="cover" :image="cover" look="heavy" class="pr-absolute pr-pin pr-opacity-25"></BluredBackground>
+                            </transition>
+                        </TweenTransition>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+</template>
+
+<script lang="ts">
+import {Component, Vue, Prop} from 'vue-property-decorator';
+import Header from '@/components/atoms/Header.vue';
+import Player from '@/components/molecules/Player.vue';
+import BluredBackground from '@/components/molecules/BluredBackground.vue';
+import TweenTransition from '@/components/atoms/TweenTransition.vue';
+import {TweenLite} from 'gsap';
+@Component({
+    components: {
+        Header,
+        Player,
+        TweenTransition,
+        BluredBackground
+    },
+    computed: {
+
+    },
+})
+export default class Navigation extends Vue {
+    get cover() {
+        return this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : '';
+    }
+    public backgroundTransitionEnter(el, done) {
+        (this.$refs['background'] as any).enter(done);
+    }
+
+    public backgroundTransitionLeave(el, done) {
+        (this.$refs['background'] as any).leave(done);
+    }
+    public coverTransitionEnter(el, done) {
+        (this.$refs['cover'] as any).enter(done);
+    }
+
+    public coverTransitionLeave(el, done) {
+        (this.$refs['cover'] as any).leave(done);
+    }
+}
+</script>

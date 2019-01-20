@@ -1,21 +1,36 @@
 <template>
     <div id="app">
         <Navigation></Navigation>
-        <router-view></router-view>
+        <TweenTransition ref="view" class="pr-min-h-screen">
+            <transition @enter="routeTransitionEnter" @leave="routeTransitionLeave" :css="false" mode="out-in">
+                <router-view class="app__view" :class="{'app__view--blured': $store.state.navigation.fullscreen}"></router-view>
+            </transition>
+        </TweenTransition>
     </div>
 </template>
 
-<script>
+<script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import Navigation from '@/components/organisms/Navigation.vue';
+    import TweenTransition from '@/components/atoms/TweenTransition.vue';
 
     @Component({
         components: {
             Navigation,
+            TweenTransition
         },
     })
     export default class App extends Vue {
+        public routeTransitionEnter(el, done) {
+            (this.$refs['view'] as any).enter(done);
+        }
+
+        public routeTransitionLeave(el, done) {
+            (this.$refs['view'] as any).leave(done);
+        }
+
         mounted() {
+
         }
     }
 </script>
@@ -32,5 +47,14 @@
     /*left: 0;*/
     /*right: 0;*/
     /*bottom: 0;*/
+    .app__view {
+        opacity: 1;
+        transition: all .6s cubic-bezier(.215, .61, .355, 1);
+        transform: scale(1);
+        &--blured {
+            opacity: 0;
+            transform: scale(.9);
+        }
+    }
 }
 </style>

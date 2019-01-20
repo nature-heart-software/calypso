@@ -8,6 +8,7 @@
             right: 0;
             bottom: 0;
             overflow: hidden;
+            pointer-events: none;
         }
         .tweenTransition__bars {
             width: 100%;
