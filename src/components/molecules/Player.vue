@@ -80,7 +80,7 @@
 
 <template>
     <div class="player">
-        <div class="player__controls pr-w-full pr-pr-8 pr-py-2 pr-pt-4">
+        <div class="player__controls pr-w-full pr-pr-8 pr-py-4">
             <div class="player__controls__top pr-w-full pr-max-w-full">
                 <div class="player__controls__buttons">
                     <div class="player__controls__button" @click="playPrevious()">
@@ -96,12 +96,13 @@
                 </div>
             </div>
             <div class="player__controls__middle pr-w-full">
-                <div class="player__trackName pr-my-2 pr-mt-0">
+                <div class="player__trackName">
                     <div>
                         <a :title="song.embeds[0].title" :href="song.embeds[0].url" class="player__trackName__link pr-text-white hover:pr-text-grey-light" target="_blank" v-if="song">{{song.embeds[0].title}}</a>
                     </div>
-                    <div class="pr-leading-none">
-                        <a :title="song.embeds[0].author.name" :href="song.embeds[0].author.url" class="player__trackName__link pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal" target="_blank" v-if="song">{{song.embeds[0].author.name}}</a>
+                    <div class="pr-flex">
+                        <a :title="song.embeds[0].author.name" :href="song.embeds[0].author.url" class="player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal" target="_blank" v-if="song">{{song.embeds[0].author.name}}</a>
+                        <strong class="pr-flex-1 pr-text-right pr-text-xs pr-text-grey-light pr-font-mono">{{currentTimeFormated}} / {{totalTimeFormated}}</strong>
                     </div>
                 </div>
             </div>
@@ -112,7 +113,6 @@
             </div>
             <div class="pr-absolute pr-overflow-hidden" style="width: 0; height: 0;">
                 <audio id="player__me"></audio>
-
             </div>
         </div>
         <div class="player__picture">
