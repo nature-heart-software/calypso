@@ -148,7 +148,10 @@ export default class Song extends Vue {
         return n % 2 == 0;
     }
     private play() {
-        this.$store.dispatch('player/play', this.song);
+        if (this.hover) {
+            this.$store.dispatch('player/play', this.song);
+
+        }
     }
     private mounted() {
         const {title, background} = (this.$refs as any);

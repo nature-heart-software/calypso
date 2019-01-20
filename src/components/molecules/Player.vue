@@ -107,7 +107,7 @@
             </div>
             <div class="player__controls__bottom pr-w-full">
                 <div class="player__trackProgress">
-                    <el-slider v-model="trueCurrentTime" :min="0" :max="trueTotalTime" :show-tooltip="false"></el-slider>
+                    <el-slider v-model="trueCurrentTime" :min="0" :max="trueTotalTime" :show-tooltip="false" @change="setTime" @mousedown.native="isSliding = true"></el-slider>
                 </div>
             </div>
             <div class="pr-absolute pr-overflow-hidden" style="width: 0; height: 0;">
@@ -149,6 +149,7 @@ export default class Player extends Vue {
     private player: any = null;
     private trueCurrentTime: any = null;
     private trueTotalTime: any = null;
+    private isSliding: boolean = false;
 
     get currentTimeFormated() {
         return moment.utc(this.trueCurrentTime * 1000).format('mm:ss');
@@ -175,11 +176,11 @@ export default class Player extends Vue {
     }
 
     public coverTransitionEnter(el, done) {
-        (this.$refs['cover'] as any).enter(done);
+        (this.$refs.cover as any).enter(done);
     }
 
     public coverTransitionLeave(el, done) {
-        (this.$refs['cover'] as any).leave(done);
+        (this.$refs.cover as any).leave(done);
     }
 
     @Watch('song')
@@ -220,27 +221,47 @@ export default class Player extends Vue {
     private setSong(url: string) {
         this.player.setSrc(url);
         this.player.play();
+        this.player.setCurrentTime(0);
     }
+
+    private setTime(time: number) {
+        this.player.setCurrentTime(time);
+        this.isSliding = false;
+    }
+
     private mounted() {
         const __this = this;
         this.player = new MediaElementPlayer('player__me', {
             success(mediaElement: any, originalNode: any, instance: any) {
                 mediaElement.addEventListener('timeupdate', () => {
-                    const currentTime = __this.trueCurrentTime = __this.player.getCurrentTime();
-                    const totalTime = __this.trueTotalTime = __this.player.duration;
-                    if (Math.floor(currentTime) === Math.floor(totalTime) && typeof __this.nextSong) {
-                        console.log('yeet');
-                        __this.playNext();
+                    const currentTime = __this.player.getCurrentTime();
+                    const totalTime = __this.player.duration;
+                    if (!__this.isSliding) {
+                        __this.trueCurrentTime = currentTime;
+                        __this.trueTotalTime = totalTime;
                     }
                 });
+                mediaElement.addEventListener('ended', () => {
+                    __this.playNext();
+                });
             },
-            // ended() {
-            //     console.log('ended');
-            //     if (this.nextSong) {
-            //         __this.playNext();
-            //     }
-            // }
         });
+        this.bindListeners();
+    }
+
+    private onMouseUp() {
+    }
+
+    private bindListeners() {
+        // window.addEventListener('mouseup', this.onMouseUp)
+    }
+
+    private removeListeners() {
+
+    }
+
+    private beforeDestroy() {
+        this.removeListeners();
     }
 }
 </script>
