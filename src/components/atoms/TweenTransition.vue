@@ -39,7 +39,7 @@
 <template>
     <div class="tweenTransition">
         <slot></slot>
-        <div class="tweenTransition__all">
+        <div class="tweenTransition__all" :class="[transitionClass]">
             <div class="tweenTransition__bars" ref="barGroup">
                 <div ref="bar1" class="tweenTransition__bar tweenTransition__bar1"></div>
                 <div ref="bar2" class="tweenTransition__bar tweenTransition__bar2"></div>
@@ -56,7 +56,7 @@ import {TweenLite, Expo} from 'gsap';
     components: {},
 })
 export default class TweenTransition extends Vue {
-
+    @Prop({default: ''}) transitionClass!: string;
     public leave(done: any) {
         const { bar1, bar2, bar3, barGroup } = this.$refs;
         const duration = 1;

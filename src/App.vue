@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <Navigation></Navigation>
-        <TweenTransition ref="view" class="pr-min-h-screen">
+        <TweenTransition ref="view" class="pr-min-h-screen" transition-class="pr-fixed pr-pin">
             <transition @enter="routeTransitionEnter" @leave="routeTransitionLeave" :css="false" mode="out-in">
                 <router-view class="app__view" :class="{'app__view--blured': $store.state.navigation.fullscreen}"></router-view>
             </transition>
