@@ -12,7 +12,14 @@
             height: 100px;
             transition: all .5s cubic-bezier(.165, .84, .44, 1);
         }
-
+        .navigation__links {
+            margin-left: config('margin.lg');
+            .navigation__link {
+                a {
+                    color: white;
+                }
+            }
+        }
         .navigation__container {
             /*padding-left: 10px;*/
             display: flex;
@@ -38,8 +45,9 @@
             }
             .navigation__screen__middle {
                 position: absolute;
-                top: 100px;
+                top: 150px;
                 width: 100%;
+                transition: all .3s cubic-bezier(.165, .84, .44, 1);
             }
             .navigation__screen__bottom {
                 transition: all .5s cubic-bezier(.165, .84, .44, 1);
@@ -135,16 +143,20 @@
                             <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
                         </div>
                     </div>
-                    <!--<div class="navigation__screen__middle">-->
-                        <!--<ul>-->
-                            <!--<li>-->
-                                <!--<router-link :to="{name: 'home'}">Home</router-link>-->
-                            <!--</li>-->
-                            <!--<li>-->
-                                <!--<router-link :to="{name: 'about'}">About</router-link>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
+                    <div class="navigation__screen__middle" :class="{'pr-opacity-0 pr-pointer-events-none': !$store.state.navigation.fullscreen}">
+                        <ul class="navigation__links pr-list-reset">
+                            <li class="navigation__link">
+                                <Header look="brand">
+                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'home'}">Home</router-link>
+                                </Header>
+                            </li>
+                            <li class="navigation__link">
+                                <Header look="brand">
+                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'about'}">About</router-link>
+                                </Header>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="navigation__screen__bottom">
                         <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
                             <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>

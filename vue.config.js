@@ -1,8 +1,8 @@
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const argv = require('minimist')(process.argv.slice(2));
-const auth = require('./auth.json');
 
 const JsonSassPlugin = require('@bit/wurielle.pristine.webpack.json-sass-plugin');
 
@@ -24,8 +24,9 @@ module.exports = {
         },
         plugins:[
             new webpack.DefinePlugin({
-                'DISCORD_TOKEN': JSON.stringify(auth.discord.token),
-                'DISCORD_GUILD_ID': JSON.stringify(auth.discord.guild_id),
+                'DISCORD_TOKEN': JSON.stringify(process.env.DISCORD_TOKEN),
+                'DISCORD_FINDINGS_ID': JSON.stringify(process.env.DISCORD_FINDINGS_ID),
+                'DISCORD_ABOUT_ID': JSON.stringify(process.env.DISCORD_ABOUT_ID),
             }),
             new JsonSassPlugin('./config/theme.js', './config/theme.scss'),
         ]

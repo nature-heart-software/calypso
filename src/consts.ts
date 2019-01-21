@@ -1,4 +1,5 @@
 declare var DISCORD_TOKEN: any;
+
 import axios from 'axios';
 export const discordApi = axios.create({
     baseURL: 'https://discordapp.com/api/',
@@ -9,4 +10,4 @@ export const discordApi = axios.create({
     },
 });
 export const allowedProviders = ['YouTube'];
-export default { discordApi, allowedProviders };
+export default { discordApi, allowedProviders};

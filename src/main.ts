@@ -1,3 +1,7 @@
+declare const DISCORD_TOKEN: any;
+declare const DISCORD_FINDINGS_ID: any;
+declare const DISCORD_ABOUT_ID: any;
+
 import Vue from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
