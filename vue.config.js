@@ -25,6 +25,7 @@ module.exports = {
         plugins:[
             new webpack.DefinePlugin({
                 'DISCORD_TOKEN': JSON.stringify(process.env.DISCORD_TOKEN),
+                'DISCORD_GUILD_ID': JSON.stringify(process.env.DISCORD_GUILD_ID),
                 'DISCORD_FINDINGS_ID': JSON.stringify(process.env.DISCORD_FINDINGS_ID),
                 'DISCORD_ABOUT_ID': JSON.stringify(process.env.DISCORD_ABOUT_ID),
             }),

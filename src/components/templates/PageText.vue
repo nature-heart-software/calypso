@@ -9,6 +9,11 @@
         .page-text__content {
             color: white;
             @apply text-3xl;
+            /deep/ {
+                .emoji {
+                    width: 32px;
+                }
+            }
         }
     }
 </style>

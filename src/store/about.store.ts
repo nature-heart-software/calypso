@@ -2,8 +2,12 @@ declare var DISCORD_ABOUT_ID: any;
 
 import { discordApi } from '@/consts';
 import showdown from 'showdown';
-const converter = new showdown.Converter();
-
+import {find} from 'lodash';
+const converter = new showdown.Converter({
+    openLinksInNewWindow: true,
+    simplifiedAutoLink: true,
+});
+const { toHTML } = require('discord-markdown');
 const findings = {
     namespaced: true,
     state: {
@@ -11,10 +15,22 @@ const findings = {
     },
     getters: {
         markdown: (state, getters)  => {
-            return state.data.map((post: any) => post.content).reverse().join('\n');
+            return state.data.map((post: any) => post.content).reverse().join('\n\n');
         },
-        html: (state, getters)  => {
-            return converter.makeHtml(getters.markdown);
+        html: (state, getters, rootState, rootGetters)  => {
+            const discordParsing = toHTML(getters.markdown, {
+                discordParsing: true,
+                discordCallback: {
+                    channel: node => find(rootState.channels.collection, (channel: any) => channel.id === node.id).name,
+                    emoji: node => {
+                        if (node.animated) {
+                            return `<img class="emoji" src="https://cdn.discordapp.com/emojis/${node.id}.gif" alt="${node.name}">`;
+                        }
+                        return `<img class="emoji" src="https://cdn.discordapp.com/emojis/${node.id}.png" alt="${node.name}">`;
+                    },
+                }
+            });
+            return converter.makeHtml(discordParsing);
         },
     },
     mutations: {
