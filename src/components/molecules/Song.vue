@@ -134,6 +134,9 @@ export default class Song extends Vue {
     private hover: boolean = false;
     @Watch('scrollPercentage')
     onScrollPercentageChange() {
+        this.setScrollPercentage();
+    }
+    setScrollPercentage() {
         let percentage;
         if (this.scrollPercentage >= 100) {
             percentage = 100;
@@ -170,9 +173,9 @@ export default class Song extends Vue {
             .from(background, 1, {display: 'block', y: `${backgroundYValue}px`}, "start")
             .set([title.$el, background], {display: 'none'})
             // .set(song, {left: `-${songXValue}px`})
-            .progress(0);
         ;
         this.bindListeners();
+        this.setScrollPercentage();
     }
     private onMouseMove(e) {
         const {song} = this.$refs;

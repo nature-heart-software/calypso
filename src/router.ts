@@ -15,7 +15,7 @@ Component.registerHooks([
 ]);
 
 
-export default new Router({
+const router = new Router({
     routes: [
         {
             path: '/',
@@ -35,3 +35,5 @@ export default new Router({
         // return { x: 0, y: 0 }
     }
 });
+
+export default router;

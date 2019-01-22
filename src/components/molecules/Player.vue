@@ -28,6 +28,10 @@
                 overflow: hidden;
                 white-space: nowrap;
             }
+            .player__trackName--small {
+                height: 13px;
+                margin-bottom: 4px;
+            }
         }
         .player__trackProgress {
             /deep/ {
@@ -46,6 +50,13 @@
                         background-color: white;
                         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 1);
                     }
+                }
+                .el-slider__runway,
+                .el-slider__bar {
+                    height: 4px;
+                }
+                .el-slider__button-wrapper {
+                    opacity: 0;
                 }
             }
         }
@@ -74,6 +85,13 @@
                 }
             }
 
+        }
+        &:hover {
+          /deep/ {
+              .el-slider__button-wrapper {
+                  opacity: 1;
+              }
+          }
         }
     }
 </style>
@@ -107,32 +125,32 @@
                             </transition>
                         </TweenTextTransition>
                     </div>
-                    <div class="pr-flex">
-                        <a :title="song.embeds[0].author.name" :href="song.embeds[0].author.url"
-                           class="player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal"
+                    <div class="pr-flex pr-items-center pr-justify-between">
+                        <TweenTextTransition ref="text2" class="pr-inline pr-text-sm pr-leading-none player__trackName--small">
+                            <transition @enter="text2TransitionEnter" @leave="text2TransitionLeave" :css="false"
+                                        mode="out-in">
+                        <a :key="song.id" :title="song.embeds[0].author.name" :href="song.embeds[0].author.url"
+                           class="pr-inline player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal"
                            target="_blank" v-if="song">
-                            <TweenTextTransition ref="text2" class="pr-inline">
-                                <transition @enter="text2TransitionEnter" @leave="text2TransitionLeave" :css="false"
-                                            mode="out-in">
-                                    <span :key="song.id">{{song.embeds[0].author.name}}</span>
-                                </transition>
-                            </TweenTextTransition>
+                                    <span>{{song.embeds[0].author.name}}</span>
                         </a>
-                        <strong v-if="song"
-                                class="pr-flex-1 pr-text-right pr-text-xs pr-text-grey-light pr-font-mono">
-                            <TweenTextTransition ref="text3" class="pr-inline">
-                                <transition @enter="text3TransitionEnter" @leave="text3TransitionLeave" :css="false"
-                                            mode="out-in">
-                                    <span :key="song.id">{{currentTimeFormated}} / {{totalTimeFormated}}</span>
-                                </transition>
-                            </TweenTextTransition>
+                            </transition>
+                        </TweenTextTransition>
+                        <TweenTextTransition ref="text3" class="pr-inline pr-text-sm pr-leading-none player__trackName--small">
+                            <transition @enter="text3TransitionEnter" @leave="text3TransitionLeave" :css="false"
+                                        mode="out-in">
+                        <strong :key="song.id" v-if="song"
+                                class="pr-inline pr-text-right pr-text-xs pr-text-grey-light pr-font-mono">
+                                    <span>{{currentTimeFormated}} / {{totalTimeFormated}}</span>
                         </strong>
+                            </transition>
+                        </TweenTextTransition>
                     </div>
                 </div>
             </div>
             <div class="player__controls__bottom pr-w-full">
                 <div class="player__trackProgress">
-                    <el-slider v-model="trueCurrentTime" :min="0" :max="trueTotalTime" :show-tooltip="false"
+                    <el-slider height="4px" v-model="trueCurrentTime" :min="0" :max="trueTotalTime" :show-tooltip="false"
                                @change="setTime" @mousedown.native="isSliding = true"></el-slider>
                 </div>
             </div>

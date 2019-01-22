@@ -158,9 +158,16 @@
                         </ul>
                     </div>
                     <div class="navigation__screen__bottom">
-                        <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-content-end">
-                            <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>
-                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
+                        <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-items-end">
+
+                            <TweenTextTransition ref="title">
+                                <transition @enter="titleTransitionEnter" @leave="titleTransitionLeave" :css="false" mode="out-in">
+                                    <div :key="$store.state.player.song ? $store.state.player.song.id : ''">
+                                        <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>
+                                        <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
+                                    </div>
+                                </transition>
+                            </TweenTextTransition>
                         </div>
                         <div class="pr-w-1/3">
                             <div class="pr-ratio-1/1">
@@ -190,6 +197,7 @@ import {Component, Vue, Prop} from 'vue-property-decorator';
 import Header from '@/components/atoms/Header.vue';
 import Player from '@/components/molecules/Player.vue';
 import BluredBackground from '@/components/molecules/BluredBackground.vue';
+import TweenTextTransition from '@/components/atoms/TweenTextTransition.vue';
 import TweenTransition from '@/components/atoms/TweenTransition.vue';
 import {TweenLite} from 'gsap';
 @Component({
@@ -197,6 +205,7 @@ import {TweenLite} from 'gsap';
         Header,
         Player,
         TweenTransition,
+        TweenTextTransition,
         BluredBackground
     },
     computed: {
@@ -220,6 +229,13 @@ export default class Navigation extends Vue {
 
     public coverTransitionLeave(el, done) {
         (this.$refs['cover'] as any).leave(done);
+    }
+    public titleTransitionEnter(el, done) {
+        (this.$refs['title'] as any).enter(done);
+    }
+
+    public titleTransitionLeave(el, done) {
+        (this.$refs['title'] as any).leave(done);
     }
 }
 </script>

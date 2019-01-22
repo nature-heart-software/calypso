@@ -30,7 +30,9 @@
 
 <template>
     <div class="tweenTextTransition">
-        <slot></slot>
+        <div ref="text" class="pr-inline">
+            <slot></slot>
+        </div>
         <div class="tweenTextTransition__all">
             <div class="tweenTextTransition__bars" ref="barGroup">
                 <div ref="bar1" class="tweenTextTransition__bar tweenTextTransition__bar1"></div>
@@ -48,19 +50,27 @@ import {TweenLite, Expo} from 'gsap';
 export default class tweenTextTransition extends Vue {
 
     public leave(done: any) {
-        const { bar1, barGroup } = this.$refs;
-        const duration = 1;
-        TweenLite.set(bar1, {width: 0});
-        TweenLite.set(barGroup, {x: '0%'});
-        TweenLite.to(bar1, duration, {width: '100%', ease: Expo.easeInOut, onComplete: isDone});
+        const { bar1, barGroup, text } = this.$refs;
+        const duration = .5;
+        TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
+        TweenLite.to(bar1, duration, {y: '0%', ease: Expo.easeInOut, onComplete: () => {
+                TweenLite.set(text, {visibility: 'hidden'});
+                TweenLite.to(bar1, duration, {y: '-100%', ease: Expo.easeInOut, onComplete: isDone});
+            }
+        });
         function isDone() {
             done();
         }
     }
     public enter(done: any) {
-        const { barGroup } = this.$refs;
-        const duration = 1;
-        TweenLite.to(barGroup, duration, {x: '101%', ease: Expo.easeOut, delay: duration * .87, onComplete: isDone});
+        const { bar1, barGroup, text } = this.$refs;
+        const duration = .5;
+        TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
+        TweenLite.to(bar1, duration, {y: '0%', ease: Expo.easeInOut, onComplete: () => {
+                TweenLite.set(text, {visibility: 'visible'});
+                TweenLite.to(bar1, duration, {y: '-100%', delay: duration, ease: Expo.easeOut, onComplete: isDone});
+            }
+        });
         function isDone() {
             done();
         }

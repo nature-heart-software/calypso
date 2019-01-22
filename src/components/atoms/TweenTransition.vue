@@ -74,7 +74,7 @@ export default class TweenTransition extends Vue {
         const duration = 1;
         TweenLite.to(bar2, duration, {width: '100%', ease: Expo.easeOut, delay: duration * .5});
         TweenLite.to(bar3, duration, {width: '100%', ease: Expo.easeOut, delay: duration * .75});
-        TweenLite.to(barGroup, duration, {x: '100%', ease: Expo.easeOut, delay: duration * .87, onComplete: isDone});
+        TweenLite.to(barGroup, duration, {x: '101%', ease: Expo.easeOut, delay: duration * .87, onComplete: isDone});
         function isDone() {
             done();
         }

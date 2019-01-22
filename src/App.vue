@@ -21,8 +21,15 @@
         },
     })
     export default class App extends Vue {
+        private appeared: boolean = false;
         public routeTransitionEnter(el, done) {
-            (this.$refs['view'] as any).enter(done);
+            window.scrollTo(0, 0);
+            if (this.appeared) {
+                (this.$refs['view'] as any).enter(done);
+            } else {
+                done();
+                this.appeared = true;
+            }
         }
 
         public routeTransitionLeave(el, done) {
