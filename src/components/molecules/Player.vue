@@ -109,6 +109,9 @@
                     & + .player__controls__button {
                         margin-left: 20px;
                     }
+                    &--active {
+                        color: #3ce3cc;
+                    }
                 }
             }
             .player__controls__bottom {
@@ -131,15 +134,25 @@
         <div class="player__controls pr-w-full pr-pr-8 pr-py-4">
             <div class="player__controls__top pr-w-full pr-max-w-full">
                 <div class="player__controls__buttons">
-                    <div class="player__controls__button" @click="playPrevious()">
-                        <i class="icon ion-md-skip-backward"></i>
+                    <div class="pr-inline-flex">
+                        <div class="player__controls__button" @click="playPrevious()">
+                            <i class="icon ion-md-skip-backward"></i>
+                        </div>
+                        <div class="player__controls__button" @click="resumePause()">
+                            <i v-if="isPlaying" class="icon ion-md-pause"></i>
+                            <i v-else class="icon ion-md-play"></i>
+                        </div>
+                        <div class="player__controls__button" @click="playNext()">
+                            <i class="icon ion-md-skip-forward"></i>
+                        </div>
                     </div>
-                    <div class="player__controls__button" @click="resumePause()">
-                        <i v-if="isPlaying" class="icon ion-md-pause"></i>
-                        <i v-else class="icon ion-md-play"></i>
-                    </div>
-                    <div class="player__controls__button" @click="playNext()">
-                        <i class="icon ion-md-skip-forward"></i>
+                    <div class="pr-flex-1 pr-justify-end pr-inline-flex">
+                        <div class="player__controls__button" :class="{'player__controls__button--active': repeat}" @click="toggleRepeat()">
+                            <i class="icon ion-md-repeat"></i>
+                        </div>
+                        <div class="player__controls__button" @click="openLink()">
+                            <i class="icon ion-md-open"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -223,7 +236,8 @@
         },
     })
     export default class Player extends Vue {
-        private isPlaying: any = true;
+        private isPlaying: boolean = false;
+        private repeat: boolean = false;
         private player: any = null;
         private trueCurrentTime: any = null;
         private trueTotalTime: any = null;
@@ -304,6 +318,12 @@
             this.isPlaying = true;
         }
 
+        private replay() {
+            this.player.setCurrentTime(0);
+            this.player.play();
+            this.isPlaying = true;
+        }
+
         private playPrevious() {
             this.$store.dispatch('player/play', this.previousSong);
         }
@@ -312,6 +332,13 @@
             this.$store.dispatch('player/play', this.nextSong);
         }
 
+        private toggleRepeat() {
+            this.repeat = !this.repeat;
+        }
+
+        private openLink() {
+            window.open(this.song.embeds[0].url, '_blank');
+        }
         private resumePause() {
             if (this.isPlaying) {
                 this.pause();
@@ -345,7 +372,11 @@
                         }
                     });
                     mediaElement.addEventListener('ended', () => {
-                        __this.playNext();
+                        if (__this.repeat) {
+                            __this.replay();
+                        } else {
+                            __this.playNext();
+                        }
                     });
                 },
             });

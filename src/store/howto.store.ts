@@ -1,4 +1,4 @@
-declare var DISCORD_ABOUT_ID: any;
+declare var DISCORD_HOWTO_ID: any;
 
 import { discordApi } from '@/consts';
 import showdown from 'showdown';
@@ -8,7 +8,7 @@ const converter = new showdown.Converter({
     simplifiedAutoLink: true,
 });
 const { toHTML } = require('discord-markdown');
-const about = {
+const howto = {
     namespaced: true,
     state: {
         data: [],
@@ -41,7 +41,7 @@ const about = {
     actions: {
         fetch: ({commit}: any) => {
             return new Promise((resolve, reject) => {
-                discordApi.get('channels/' + DISCORD_ABOUT_ID + '/messages?limit=100')
+                discordApi.get('channels/' + DISCORD_HOWTO_ID + '/messages?limit=100')
                     .then(({ data }) => {
                         commit('setData', data);
                         resolve(data);
@@ -51,4 +51,4 @@ const about = {
     },
 };
 
-export default about;
+export default howto;

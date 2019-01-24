@@ -28,6 +28,8 @@ module.exports = {
                 'DISCORD_GUILD_ID': JSON.stringify(process.env.DISCORD_GUILD_ID),
                 'DISCORD_FINDINGS_ID': JSON.stringify(process.env.DISCORD_FINDINGS_ID),
                 'DISCORD_ABOUT_ID': JSON.stringify(process.env.DISCORD_ABOUT_ID),
+                'DISCORD_HOWTO_ID': JSON.stringify(process.env.DISCORD_HOWTO_ID),
+                'DISCORD_RULES_ID': JSON.stringify(process.env.DISCORD_RULES_ID),
             }),
             new JsonSassPlugin('./config/theme.js', './config/theme.scss'),
         ]

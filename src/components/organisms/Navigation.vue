@@ -155,6 +155,16 @@
                                     <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'about'}">About</router-link>
                                 </Header>
                             </li>
+                            <li class="navigation__link">
+                                <Header look="brand">
+                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'howto'}">How To</router-link>
+                                </Header>
+                            </li>
+                            <li class="navigation__link">
+                                <Header look="brand">
+                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'rules'}">Rules</router-link>
+                                </Header>
+                            </li>
                         </ul>
                     </div>
                     <div class="navigation__screen__bottom">
