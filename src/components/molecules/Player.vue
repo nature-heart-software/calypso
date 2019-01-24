@@ -46,14 +46,19 @@
             }
         }
         .player__trackProgress {
+            margin-top: -8px;
             /deep/ {
                 .el-slider__runway {
                     margin: 0;
-                    background-color: white;
                     border-radius: 0;
+                    &:before {
+                        background-color: white;
+                    }
                     .el-slider__bar {
                         border-radius: 0;
-                        background-color: #6e22ec;
+                        &:before {
+                            background-color: #6e22ec;
+                        }
                     }
                     .el-slider__button {
                         height: 12px;
@@ -65,10 +70,20 @@
                 }
                 .el-slider__runway,
                 .el-slider__bar {
-                    height: 4px;
+                    height: 20px;
+                    display: flex;
+                    background-color: transparent;
+                    align-items: center;
+                    &:before {
+                        content: '';
+                        flex: 1;
+                        height: 4px;
+                    }
                 }
                 .el-slider__button-wrapper {
                     opacity: 0;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
                 }
             }
         }
@@ -95,6 +110,9 @@
                         margin-left: 20px;
                     }
                 }
+            }
+            .player__controls__bottom {
+                height: 4px;
             }
 
         }
@@ -125,14 +143,14 @@
                     </div>
                 </div>
             </div>
-            <div class="player__controls__middle pr-w-full">
+            <div class="player__controls__middle pr-w-full pr-pointer-events-none">
                 <div class="player__trackName">
                     <div class="player__trackName__top player__trackName__link" :class="{'player__trackName__link--hidden': !showText}">
                         <TweenTextTransition ref="text1" class="pr-inline" @show-text="showText = true" @hide-text="showText = false">
                             <transition @enter="text1TransitionEnter" @leave="text1TransitionLeave" :css="false"
                                         mode="out-in">
                                 <a :key="song ? song.id : ''" :title="song ? song.embeds[0].title : ''" :href="song ? song.embeds[0].url : ''"
-                                   class="pr-text-white hover:pr-text-grey-light"
+                                   class="pr-text-white hover:pr-text-grey-light pr-pointer-events-auto"
                                    target="_blank">{{song ? song.embeds[0].title : ''}}</a>
                             </transition>
                         </TweenTextTransition>
@@ -142,7 +160,7 @@
                             <transition @enter="text2TransitionEnter" @leave="text2TransitionLeave" :css="false"
                                         mode="out-in">
                         <a :key="song ? song.id : ''" :title="song ? song.embeds[0].author.name : ''" :href="song ? song.embeds[0].author.url : ''"
-                           class="pr-inline player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal"
+                           class="pr-inline player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal pr-pointer-events-auto"
                            target="_blank">
                                     <span>{{song ? song.embeds[0].author.name : ''}}</span>
                         </a>
@@ -152,7 +170,7 @@
                             <transition @enter="text3TransitionEnter" @leave="text3TransitionLeave" :css="false"
                                         mode="out-in">
                         <strong :key="song ? song.id : ''"
-                                class="pr-inline pr-text-right pr-text-xs pr-text-grey-light pr-font-mono">
+                                class="pr-inline pr-text-right pr-text-xs pr-text-grey-light pr-font-mono pr-pointer-events-auto">
                                     <span v-if="song">{{currentTimeFormated}} / {{totalTimeFormated}}</span>
                         </strong>
                             </transition>
