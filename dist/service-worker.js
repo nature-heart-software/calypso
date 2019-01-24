@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.b3eb1a71f5a8b91d6d9c65ebb3e923e8.js"
+  "precache-manifest.392cf7245429f8f7c6b66f19d0b93418.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "calypso"});
