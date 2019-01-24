@@ -64,6 +64,10 @@ self.__precacheManifest = [
     "url": "fonts/ionicons.96f1c901.woff2"
   },
   {
+    "revision": "0d3af9ed87b47d5a3d414fbc5a70bca7",
+    "url": "fonts/ionicons.0d3af9ed.woff"
+  },
+  {
     "revision": "0a6f9ed34dce4cc5eb61f12cb9e68ed7",
     "url": "fonts/ionicons.0a6f9ed3.eot"
   },
@@ -74,10 +78,6 @@ self.__precacheManifest = [
   {
     "revision": "582e81d61e0acaf4ace04a43ba18f2f5",
     "url": "img/ionicons.582e81d6.svg"
-  },
-  {
-    "revision": "0d3af9ed87b47d5a3d414fbc5a70bca7",
-    "url": "fonts/ionicons.0d3af9ed.woff"
   },
   {
     "revision": "238ffc7609a1cd4aa08eafd59d9a1d03",
