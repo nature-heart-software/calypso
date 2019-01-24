@@ -17,11 +17,20 @@
                 text-align: center;
             }
         }
+        .player__controls__middle {
+            height: 38px;
+        }
         .player__trackName {
             color: white;
             font-weight: bold;
             font-size: 14px;
             letter-spacing: .1rem;
+            .player__trackName__top {
+                height: 21px;
+            }
+            .player__trackName__bottom {
+                height: 17px;
+            }
             .player__trackName__link {
                 display: inherit;
                 text-overflow: ellipsis;
@@ -118,33 +127,33 @@
             </div>
             <div class="player__controls__middle pr-w-full">
                 <div class="player__trackName">
-                    <div class="player__trackName__link" :class="{'player__trackName__link--hidden': !showText}">
+                    <div class="player__trackName__top player__trackName__link" :class="{'player__trackName__link--hidden': !showText}">
                         <TweenTextTransition ref="text1" class="pr-inline" @show-text="showText = true" @hide-text="showText = false">
                             <transition @enter="text1TransitionEnter" @leave="text1TransitionLeave" :css="false"
                                         mode="out-in">
-                                <a :key="song.id" :title="song.embeds[0].title" :href="song.embeds[0].url"
+                                <a :key="song ? song.id : ''" :title="song ? song.embeds[0].title : ''" :href="song ? song.embeds[0].url : ''"
                                    class="pr-text-white hover:pr-text-grey-light"
-                                   target="_blank" v-if="song">{{song.embeds[0].title}}</a>
+                                   target="_blank">{{song ? song.embeds[0].title : ''}}</a>
                             </transition>
                         </TweenTextTransition>
                     </div>
-                    <div class="pr-flex pr-items-center pr-justify-between">
+                    <div class="player__trackName__bottom pr-flex pr-items-center pr-justify-between">
                         <TweenTextTransition ref="text2" class="pr-inline pr-text-sm pr-leading-none player__trackName--small">
                             <transition @enter="text2TransitionEnter" @leave="text2TransitionLeave" :css="false"
                                         mode="out-in">
-                        <a :key="song.id" :title="song.embeds[0].author.name" :href="song.embeds[0].author.url"
+                        <a :key="song ? song.id : ''" :title="song ? song.embeds[0].author.name : ''" :href="song ? song.embeds[0].author.url : ''"
                            class="pr-inline player__trackName__link pr-leading-none pr-text-xs pr-text-grey-light hover:pr-text-grey pr-leading-normal"
-                           target="_blank" v-if="song">
-                                    <span>{{song.embeds[0].author.name}}</span>
+                           target="_blank">
+                                    <span>{{song ? song.embeds[0].author.name : ''}}</span>
                         </a>
                             </transition>
                         </TweenTextTransition>
                         <TweenTextTransition ref="text3" class="pr-inline pr-text-sm pr-leading-none player__trackName--small">
                             <transition @enter="text3TransitionEnter" @leave="text3TransitionLeave" :css="false"
                                         mode="out-in">
-                        <strong :key="song.id" v-if="song"
+                        <strong :key="song ? song.id : ''"
                                 class="pr-inline pr-text-right pr-text-xs pr-text-grey-light pr-font-mono">
-                                    <span>{{currentTimeFormated}} / {{totalTimeFormated}}</span>
+                                    <span v-if="song">{{currentTimeFormated}} / {{totalTimeFormated}}</span>
                         </strong>
                             </transition>
                         </TweenTextTransition>
