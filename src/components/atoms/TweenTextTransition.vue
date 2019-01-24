@@ -55,6 +55,7 @@ export default class tweenTextTransition extends Vue {
         TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
         TweenLite.to(bar1, duration, {y: '0%', ease: Expo.easeInOut, onComplete: () => {
                 TweenLite.set(text, {visibility: 'hidden'});
+                this.$emit('hide-text');
                 TweenLite.to(bar1, duration, {y: '-100%', ease: Expo.easeInOut, onComplete: isDone});
             }
         });
@@ -68,6 +69,7 @@ export default class tweenTextTransition extends Vue {
         TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
         TweenLite.to(bar1, duration, {y: '0%', ease: Expo.easeInOut, onComplete: () => {
                 TweenLite.set(text, {visibility: 'visible'});
+                this.$emit('show-text');
                 TweenLite.to(bar1, duration, {y: '-100%', delay: duration, ease: Expo.easeOut, onComplete: isDone});
             }
         });

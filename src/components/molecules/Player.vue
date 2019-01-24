@@ -27,6 +27,9 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
+                &--hidden {
+                    text-overflow: initial;
+                }
             }
             .player__trackName--small {
                 height: 13px;
@@ -115,8 +118,8 @@
             </div>
             <div class="player__controls__middle pr-w-full">
                 <div class="player__trackName">
-                    <div class="player__trackName__link">
-                        <TweenTextTransition ref="text1" class="pr-inline">
+                    <div class="player__trackName__link" :class="{'player__trackName__link--hidden': !showText}">
+                        <TweenTextTransition ref="text1" class="pr-inline" @show-text="showText = true" @hide-text="showText = false">
                             <transition @enter="text1TransitionEnter" @leave="text1TransitionLeave" :css="false"
                                         mode="out-in">
                                 <a :key="song.id" :title="song.embeds[0].title" :href="song.embeds[0].url"
@@ -198,6 +201,7 @@
         private trueCurrentTime: any = null;
         private trueTotalTime: any = null;
         private isSliding: boolean = false;
+        private showText: boolean = true;
 
         get currentTimeFormated() {
             return moment.utc(this.trueCurrentTime * 1000).format('mm:ss');
