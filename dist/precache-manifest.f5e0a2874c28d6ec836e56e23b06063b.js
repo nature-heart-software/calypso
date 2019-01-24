@@ -60,10 +60,6 @@ self.__precacheManifest = [
     "url": "img/mejs-controls.f0849a5e.svg"
   },
   {
-    "revision": "96f1c901c087fb64019f7665f7f8aca6",
-    "url": "fonts/ionicons.96f1c901.woff2"
-  },
-  {
     "revision": "0d3af9ed87b47d5a3d414fbc5a70bca7",
     "url": "fonts/ionicons.0d3af9ed.woff"
   },
@@ -76,6 +72,10 @@ self.__precacheManifest = [
     "url": "fonts/ionicons.78ea6899.ttf"
   },
   {
+    "revision": "96f1c901c087fb64019f7665f7f8aca6",
+    "url": "fonts/ionicons.96f1c901.woff2"
+  },
+  {
     "revision": "582e81d61e0acaf4ace04a43ba18f2f5",
     "url": "img/ionicons.582e81d6.svg"
   },
@@ -84,12 +84,12 @@ self.__precacheManifest = [
     "url": "index.html"
   },
   {
-    "revision": "042a97cefe8ec4772449251aac62130f",
-    "url": "favicon-16x16.png"
-  },
-  {
     "revision": "89c92860e94c248c826f548f5237d981",
     "url": "favicon-32x32.png"
+  },
+  {
+    "revision": "042a97cefe8ec4772449251aac62130f",
+    "url": "favicon-16x16.png"
   },
   {
     "revision": "0590066449f8d0752559",
