@@ -15,8 +15,9 @@
             background-color: #10111f;
         }
         .backgroundFigures__timer {
-            top: 20%;
-            left: 60%;
+            bottom: -3%;
+            right: 3%;
+            z-index: 1;
         }
     }
 </style>
@@ -24,15 +25,15 @@
 <template>
     <div class="backgroundFigures">
         <div class="backgroundFigures__group backgroundFigures__timer" ref="timerSVG">
-            <svg :key="this['player/currentTimeFormated']" overflow="visible">
+            <svg :key="this['player/currentTimeFormated']" overflow="visible" :width="`${timerBBox.width}`" :height="`${timerBBox.height}`">
                 <defs>
                     <clipPath id="text-mask-1" x="0" y="0">
-                        <text y="0" x="0" ref="timer" class="pr-font-mono" font-weight="bold" font-size="15em" fill="#fff" dominant-baseline="text-before-edge">{{this['player/currentTimeFormated']}}</text>
+                        <text y="0" x="0" ref="timer" class="pr-font-mono" font-weight="bold" font-size="30vh" fill="#fff" dominant-baseline="text-before-edge">{{this['player/currentTimeFormated']}}</text>
                     </clipPath>
                 </defs>
                 <g clip-path="url(#text-mask-1)" fill-opacity="1">
                     <rect :width="`${timerBBox.width}px`" :height="`${timerBBox.height}px`" :x="`${timerBBox.x}`" :y="`${timerBBox.y}`" fill="#161729" x="0" y="0" fill-opacity="1"/>
-                    <rect :width="`${$store.state.player.trueCurrentTime / $store.state.player.trueTotalTime * timerBBox.width }px`" :height="`${timerBBox.height}px`"  :x="`${timerBBox.x}`" :y="`${timerBBox.y}`" fill="#10111f" x="0" y="0" fill-opacity="1"/>
+                    <rect :width="`${$store.state.player.trueCurrentTime / $store.state.player.trueTotalTime * timerBBox.width }px`" :height="`${timerBBox.height}px`"  :x="`${timerBBox.x}`" :y="`${timerBBox.y}`" fill="#20223e" x="0" y="0" fill-opacity="1"/>
                 </g>
             </svg>
         </div>
@@ -131,8 +132,8 @@
             const percentageX = e.clientX / viewWidth * 100;
             const percentageY = e.clientY / viewHeight * 100;
             // TODO: Maths for this
-            TweenLite.to(figure, 1, {x: `${(percentageX - 50) / 5}%`, y: `${(percentageY - 50) / 5}%`});
-            TweenLite.to(timerSVG, 1, {x: `${(percentageX - 50) / 15}%`, y: `${(percentageY - 50) / 15}%`});
+            TweenLite.to(figure, 1, {x: `${(percentageX - 50) / 3}%`, y: `${(percentageY - 50) / 3}%`});
+            TweenLite.to(timerSVG, 1, {x: `${(percentageX - 50) / 20}%`, y: `${(percentageY - 50) / 20}%`});
         }
 
         private beforeDestroy() {
