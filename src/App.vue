@@ -6,6 +6,7 @@
                 <router-view class="app__view" :class="{'app__view--blured': $store.state.navigation.fullscreen}"></router-view>
             </transition>
         </TweenTransition>
+        <BackgroundFigures></BackgroundFigures>
     </div>
 </template>
 
@@ -13,11 +14,13 @@
     import {Component, Vue} from 'vue-property-decorator';
     import Navigation from '@/components/organisms/Navigation.vue';
     import TweenTransition from '@/components/atoms/TweenTransition.vue';
+    import BackgroundFigures from '@/components/atoms/BackgroundFigures.vue';
 
     @Component({
         components: {
             Navigation,
-            TweenTransition
+            TweenTransition,
+            BackgroundFigures,
         },
     })
     export default class App extends Vue {

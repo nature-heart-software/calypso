@@ -184,7 +184,7 @@
                                         mode="out-in">
                         <strong :key="song ? song.id : ''"
                                 class="pr-inline pr-text-right pr-text-xs pr-text-grey-light pr-font-mono pr-pointer-events-auto">
-                                    <span v-if="song">{{currentTimeFormated}} / {{totalTimeFormated}}</span>
+                                    <span v-if="song">{{this['player/currentTimeFormated']}} / {{this['player/totalTimeFormated']}}</span>
                         </strong>
                             </transition>
                         </TweenTextTransition>
@@ -193,7 +193,7 @@
             </div>
             <div class="player__controls__bottom pr-w-full">
                 <div class="player__trackProgress">
-                    <el-slider height="4px" v-model="trueCurrentTime" :min="0" :max="trueTotalTime" :show-tooltip="false"
+                    <el-slider height="4px" v-model="trueCurrentTime" :min="0" :max="$store.state.player.trueTotalTime" :show-tooltip="false"
                                @change="setTime" @mousedown.native="isSliding = true"></el-slider>
                 </div>
             </div>
@@ -218,7 +218,6 @@
     import {Component, Vue, Prop, Watch} from 'vue-property-decorator';
     import 'mediaelement/full';
     import 'mediaelement/build/mediaelementplayer.css';
-    import moment from 'moment';
     import {findIndex} from 'lodash';
     import {mapGetters} from 'vuex';
     import TweenTransition from '@/components/atoms/TweenTransition.vue';
@@ -232,6 +231,8 @@
         computed: {
             ...mapGetters([
                 'player/song',
+                'player/currentTimeFormated',
+                'player/totalTimeFormated',
             ]),
         },
     })
@@ -239,17 +240,15 @@
         private isPlaying: boolean = false;
         private repeat: boolean = false;
         private player: any = null;
-        private trueCurrentTime: any = null;
-        private trueTotalTime: any = null;
         private isSliding: boolean = false;
         private showText: boolean = true;
 
-        get currentTimeFormated() {
-            return moment.utc(this.trueCurrentTime * 1000).format('mm:ss');
+        get trueCurrentTime() {
+            return this.$store.state.player.trueCurrentTime;
         }
 
-        get totalTimeFormated() {
-            return moment.utc(this.trueTotalTime * 1000).format('mm:ss');
+        set trueCurrentTime(value) {
+            this.$store.dispatch('player/setTrueCurrentTime', value);
         }
 
         get songIndex() {
@@ -367,8 +366,8 @@
                         const currentTime = __this.player.getCurrentTime();
                         const totalTime = __this.player.duration;
                         if (!__this.isSliding) {
-                            __this.trueCurrentTime = currentTime;
-                            __this.trueTotalTime = totalTime;
+                            __this.$store.dispatch('player/setTrueCurrentTime', currentTime);
+                            __this.$store.dispatch('player/setTrueTotalTime', totalTime);
                         }
                     });
                     mediaElement.addEventListener('ended', () => {

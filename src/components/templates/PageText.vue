@@ -21,10 +21,10 @@
                     border: 0;
                     code {
                         border: 0;
-                        border-left: 8px solid rgba(0,0,0,.2);
-                        background-color: rgba(0,0,0,.2);
+                        border-left: 8px solid rgb(38, 40, 72);
+                        background-color: transparent;
                         color: white;
-                        padding: 40px;
+                        padding: 16px 30px;
                         @apply text-xl font-sans;
                     }
                     margin-bottom: 64px;
