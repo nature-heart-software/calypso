@@ -130,76 +130,62 @@
 </style>
 
 <template>
-    <header class="navigation" :class="{'navigation--fullscreen': $store.state.navigation.fullscreen}">
-        <nav class="container pr-flex">
-            <div class="navigation__container">
-                <div class="navigation__screen">
-                    <div class="navigation__screen__top">
-                        <div class="navigation__menu-button pr-cursor-pointer" @click="$store.dispatch('navigation/toggleFullscreen')">
-                            <div class="navigation__menu-button__bar" v-for="i in 3"></div>
-                        </div>
-                        <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
-                        <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
-                            <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
-                        </div>
-                    </div>
-                    <div class="navigation__screen__middle" :class="{'pr-opacity-0 pr-pointer-events-none': !$store.state.navigation.fullscreen}">
-                        <ul class="navigation__links pr-list-reset">
-                            <li class="navigation__link">
-                                <Header look="brand">
-                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'home'}">Home</router-link>
-                                </Header>
-                            </li>
-                            <li class="navigation__link">
-                                <Header look="brand">
-                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'about'}">About</router-link>
-                                </Header>
-                            </li>
-                            <li class="navigation__link">
-                                <Header look="brand">
-                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'howto'}">How To</router-link>
-                                </Header>
-                            </li>
-                            <li class="navigation__link">
-                                <Header look="brand">
-                                    <router-link @click.native="$store.dispatch('navigation/toggleFullscreen')" :to="{name: 'rules'}">Rules</router-link>
-                                </Header>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="navigation__screen__bottom">
-                        <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-items-end">
-
-                            <TweenTextTransition ref="title">
-                                <transition @enter="titleTransitionEnter" @leave="titleTransitionLeave" :css="false" mode="out-in">
-                                    <div :key="$store.state.player.song ? $store.state.player.song.id : ''">
-                                        <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>
-                                        <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
-                                    </div>
-                                </transition>
-                            </TweenTextTransition>
-                        </div>
-                        <div class="pr-w-1/3">
-                            <div class="pr-ratio-1/1">
-                                <TweenTransition ref="cover" class="pr-absolute pr-pin">
-                                    <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
-                                        <img :key="cover" class="pr-fit-cover pr-w-full pr-h-full" :src="cover">
-                                    </transition>
-                                </TweenTransition>
+        <header class="navigation">
+            <nav ref="nav" class="container pr-flex">
+                <div ref="navContainer" class="navigation__container">
+                    <div class="navigation__screen">
+                        <div class="navigation__screen__top">
+                            <div class="navigation__menu-button pr-cursor-pointer" @click="toggleFullscreen">
+                                <div class="navigation__menu-button__bar" v-for="i in 3"></div>
+                            </div>
+                            <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
+                            <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
+                                <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
                             </div>
                         </div>
-                    </div>
-                    <div class="navigation__screen__background">
-                        <TweenTransition ref="background" class="pr-absolute pr-pin">
-                            <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
-                                <BluredBackground :key="cover" :image="cover" look="heavy" class="pr-absolute pr-pin pr-opacity-25"></BluredBackground>
-                            </transition>
-                        </TweenTransition>
+                        <div class="navigation__screen__middle" :class="{'pr-opacity-0 pr-pointer-events-none': !$store.state.navigation.fullscreen}">
+                            <ul class="navigation__links pr-list-reset">
+                                <li v-for="link in navigation" class="navigation__link">
+                                    <Header look="brand">
+                                        <TweenTextTransition :ref="link.ref" class="pr-inline">
+                                            <router-link :class="{'pr-opacity-0': !shown}" @click.native="toggleFullscreen" :to="link.to">{{link.name}}</router-link>
+                                        </TweenTextTransition>
+                                    </Header>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ref="navBottom" class="navigation__screen__bottom">
+                            <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-items-end">
+                                <TweenTextTransition ref="title">
+                                    <transition @enter="titleTransitionEnter" @leave="titleTransitionLeave" :css="false" mode="out-in">
+                                        <div :key="$store.state.player.song ? $store.state.player.song.id : ''">
+                                            <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>
+                                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
+                                        </div>
+                                    </transition>
+                                </TweenTextTransition>
+                            </div>
+                            <div class="pr-w-1/3">
+                                <div class="pr-ratio-1/1">
+                                    <TweenTransition ref="cover" class="pr-absolute pr-pin">
+                                        <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
+                                            <img :key="cover" class="pr-fit-cover pr-w-full pr-h-full" :src="cover">
+                                        </transition>
+                                    </TweenTransition>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="navigation__screen__background">
+                            <TweenTransition ref="background" class="pr-absolute pr-pin">
+                                <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
+                                    <BluredBackground :key="cover" :image="cover" look="heavy" class="pr-absolute pr-pin pr-opacity-25"></BluredBackground>
+                                </transition>
+                            </TweenTransition>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
 </template>
 
 <script lang="ts">
@@ -209,7 +195,8 @@ import Player from '@/components/molecules/Player.vue';
 import BluredBackground from '@/components/molecules/BluredBackground.vue';
 import TweenTextTransition from '@/components/atoms/TweenTextTransition.vue';
 import TweenTransition from '@/components/atoms/TweenTransition.vue';
-import {TweenLite} from 'gsap';
+import {TweenLite, Expo} from 'gsap';
+import {forEach} from 'lodash';
 @Component({
     components: {
         Header,
@@ -223,28 +210,109 @@ import {TweenLite} from 'gsap';
     },
 })
 export default class Navigation extends Vue {
+    private shown: boolean = false;
+    private navigation: any[] = [
+        {
+            name: 'Home',
+            to: {name: 'home'},
+            ref: 'home',
+        },
+        {
+            name: 'About',
+            to: {name: 'about'},
+            ref: 'about',
+        },
+        {
+            name: 'How To',
+            to: {name: 'howto'},
+            ref: 'howto',
+        },
+        {
+            name: 'Rules',
+            to: {name: 'rules'},
+            ref: 'rules',
+        },
+    ];
     get cover() {
         return this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : '';
     }
-    public backgroundTransitionEnter(el, done) {
+
+    private transitionEnter(args, ref): void {
+        console.log('enter', ref);
+        (this.$refs[ref] as any)[0].enter(args[1]);
+    }
+
+    private transitionLeave(args, ref): void {
+        console.log('leave', ref);
+        (this.$refs[ref] as any)[0].leave(args[1]);
+    }
+
+    private show(): void {
+        console.log('menu enter');
+        const {nav, navContainer, navBottom} = (this.$refs as any);
+        console.log(nav);
+        TweenLite.to(nav, .5, {height: window.innerHeight, ease: Expo.easeOut, onComplete: () => {
+                forEach(this.navigation, (link: any) => {
+                    console.log(this.$refs[link.ref]);
+                    (this.$refs[link.ref] as any)[0].enter()
+                        .then(() => {
+                            this.shown = true;
+                            this.$nextTick(() => {
+                                (this.$refs[link.ref] as any)[0].afterEnter()
+                            });
+                        });
+                });
+            }
+        });
+        TweenLite.to(navContainer, .5, {marginLeft: 100, marginRight: 250, ease: Expo.easeOut});
+    }
+
+    private hide(): void {
+        console.log('menu leave');
+        const {nav, navContainer, navBottom} = (this.$refs as any);
+        TweenLite.to(nav, .5, {height: 100, ease: Expo.easeOut, onComplete: () => {
+                forEach(this.navigation, (link: any) => {
+                    console.log(this.$refs[link.ref]);
+                    (this.$refs[link.ref] as any)[0].leave()
+                        .then(() => {
+                            this.shown = false;
+                            this.$nextTick(() => {
+                                (this.$refs[link.ref] as any)[0].afterLeave()
+                            });
+                        });
+                });
+            }
+        });
+        TweenLite.to(navContainer, .5, {marginLeft: 0, marginRight: 0, ease: Expo.easeOut});
+    }
+
+    private toggleFullscreen(): void {
+        this.$store.dispatch('navigation/toggleFullscreen');
+        if(this.$store.state.navigation.fullscreen) {
+            this.show();
+        } else {
+            this.hide();
+        }
+    }
+    private backgroundTransitionEnter(el, done): void {
         (this.$refs['background'] as any).enter(done);
     }
 
-    public backgroundTransitionLeave(el, done) {
+    private backgroundTransitionLeave(el, done): void {
         (this.$refs['background'] as any).leave(done);
     }
-    public coverTransitionEnter(el, done) {
+    private coverTransitionEnter(el, done): void {
         (this.$refs['cover'] as any).enter(done);
     }
 
-    public coverTransitionLeave(el, done) {
+    private coverTransitionLeave(el, done): void {
         (this.$refs['cover'] as any).leave(done);
     }
-    public titleTransitionEnter(el, done) {
+    private titleTransitionEnter(el, done): void {
         (this.$refs['title'] as any).enter(done);
     }
 
-    public titleTransitionLeave(el, done) {
+    private titleTransitionLeave(el, done): void {
         (this.$refs['title'] as any).leave(done);
     }
 }

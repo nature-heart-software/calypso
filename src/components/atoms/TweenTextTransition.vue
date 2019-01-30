@@ -42,43 +42,90 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue, Prop} from 'vue-property-decorator';
-import {TweenLite, Expo} from 'gsap';
-@Component({
-    components: {},
-})
-export default class tweenTextTransition extends Vue {
+    import {Component, Vue, Prop} from 'vue-property-decorator';
+    import {TweenLite, Expo} from 'gsap';
 
-    public leave(done: any) {
-        const { bar1, barGroup, text } = this.$refs;
-        const duration = .5;
-        TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
-        TweenLite.to(bar1, duration, {y: '0%', ease: Expo.easeInOut, onComplete: () => {
-                TweenLite.set(text, {visibility: 'hidden'});
-                this.$emit('hide-text');
-                TweenLite.to(bar1, duration, {y: '-100%', ease: Expo.easeInOut, onComplete: isDone});
+    @Component({
+        components: {},
+    })
+    export default class tweenTextTransition extends Vue {
+
+        public leave(done: any) {
+            const {bar1, barGroup, text} = this.$refs;
+            const duration = .5;
+            TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
+            if (typeof done === 'function') {
+                TweenLite.to(bar1, duration, {
+                    y: '0%', ease: Expo.easeInOut, onComplete: () => {
+                        TweenLite.set(text, {visibility: 'hidden'});
+                        this.$emit('hide-text');
+                        TweenLite.to(bar1, duration, {y: '-100%', ease: Expo.easeInOut, onComplete: isDone});
+                    }
+                });
+
+                function isDone() {
+                    done();
+                }
+            } else {
+                return new Promise((resolve, reject) => {
+                    TweenLite.to(bar1, duration, {
+                        y: '0%', ease: Expo.easeInOut, onComplete: () => {
+                            resolve();
+                        }
+                    });
+                });
             }
-        });
-        function isDone() {
-            done();
+        }
+
+        public afterLeave() {
+            const {bar1, barGroup, text} = this.$refs;
+            const duration = .5;
+            TweenLite.set(text, {visibility: 'hidden'});
+            this.$emit('hide-text');
+            TweenLite.to(bar1, duration, {y: '-100%', ease: Expo.easeInOut});
+        }
+
+        public enter(done: any) {
+            const {bar1, barGroup, text} = this.$refs;
+            const duration = .5;
+            TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
+            if (typeof done === 'function') {
+                TweenLite.to(bar1, duration, {
+                    y: '0%', ease: Expo.easeInOut, onComplete: () => {
+                        TweenLite.set(text, {visibility: 'visible'});
+                        this.$emit('show-text');
+                        TweenLite.to(bar1, duration, {
+                            y: '-100%',
+                            delay: duration,
+                            ease: Expo.easeOut,
+                            onComplete: isDone
+                        });
+                    }
+                });
+
+                function isDone() {
+                    done();
+                }
+            } else {
+                return new Promise((resolve, reject) => {
+                    TweenLite.to(bar1, duration, {
+                        y: '0%', ease: Expo.easeInOut, onComplete: () => {
+                            resolve();
+                        }
+                    });
+                });
+            }
+        }
+
+        public afterEnter() {
+            const {bar1, barGroup, text} = this.$refs;
+            const duration = .5;
+            TweenLite.set(text, {visibility: 'visible'});
+            this.$emit('show-text');
+            TweenLite.to(bar1, duration, {y: '-100%', delay: duration, ease: Expo.easeOut});
+        }
+
+        private mounted() {
         }
     }
-    public enter(done: any) {
-        const { bar1, barGroup, text } = this.$refs;
-        const duration = .5;
-        TweenLite.set(bar1, {width: '100%', height: '100%', y: '100%'});
-        TweenLite.to(bar1, duration, {y: '0%', ease: Expo.easeInOut, onComplete: () => {
-                TweenLite.set(text, {visibility: 'visible'});
-                this.$emit('show-text');
-                TweenLite.to(bar1, duration, {y: '-100%', delay: duration, ease: Expo.easeOut, onComplete: isDone});
-            }
-        });
-        function isDone() {
-            done();
-        }
-    }
-
-    private mounted() {
-    }
-}
 </script>
