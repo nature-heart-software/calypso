@@ -1,9 +1,13 @@
 <style lang="scss" scoped>
+    .songWrapper {
+        position: relative;
+    }
     .song {
         height: 560px;
         display: flex;
         //margin-top: -200px;
         position: relative;
+        width: 100%;
         &:first-of-type {
             margin-top: 0;
         }
@@ -88,27 +92,29 @@
 </style>
 
 <template>
-    <div ref="song" class="song" :class="{'song--hover': hover}" @click="play()">
-        <div class="song__background--wrapper"  ref="background">
-            <BluredBackground @mouseenter.native="hover = true" @mouseleave.native="hover = false" class="song__background" :image="song.embeds[0].thumbnail.url"></BluredBackground>
-        </div>
-        <div class="container song__container">
-            <div class="song__content">
-                <div class="song__content__front">
-                    <div class="pr-w-full pr-relative pr-pr-lg pr-pointer-events-none">
-                        <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__cover pr-ratio-1/1 pr-bg-cover pr-bg-center pr-pointer-events-auto"
-                             :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
-                        <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__user pr-absolute pr-pin-bottom pr-pointer-events-auto">
-                            <div class="song__content__user__picture" :style="`background-image: url(https://cdn.discordapp.com/avatars/${song.author.id}/${song.author.avatar}.jpg)`"></div>
-                            <div class="song__content__user__name">
-                                <Header class="pr-capitalize">{{song.author.username}}<br><span class="pr-font-normal">Shared</span>
-                                </Header>
+    <div ref="songWrapper" class="songWrapper">
+        <div ref="song" class="song" :class="{'song--hover': hover}" @click="play()">
+            <div class="song__background--wrapper"  ref="background">
+                <BluredBackground @mouseenter.native="hover = true" @mouseleave.native="hover = false" class="song__background" :image="song.embeds[0].thumbnail.url"></BluredBackground>
+            </div>
+            <div class="container song__container">
+                <div class="song__content">
+                    <div class="song__content__front">
+                        <div class="pr-w-full pr-relative pr-pr-lg pr-pointer-events-none">
+                            <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__cover pr-ratio-1/1 pr-bg-cover pr-bg-center pr-pointer-events-auto"
+                                 :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
+                            <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__user pr-absolute pr-pin-bottom pr-pointer-events-auto">
+                                <div class="song__content__user__picture" :style="`background-image: url(https://cdn.discordapp.com/avatars/${song.author.id}/${song.author.avatar}.jpg)`"></div>
+                                <div class="song__content__user__name">
+                                    <Header class="pr-capitalize">{{song.author.username}} {{scrollPercentage}}<br><span class="pr-font-normal">Shared</span>
+                                    </Header>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="song__content__title pr-pointer-events-none">
-                    <Header ref="title" class="song__content__title__header" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
+                    <div class="song__content__title pr-pointer-events-none">
+                        <Header ref="title" class="song__content__title__header" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
+                    </div>
                 </div>
             </div>
         </div>
@@ -157,17 +163,19 @@ export default class Song extends Vue {
         }
     }
     private mounted() {
-        const {title, background, song} = (this.$refs as any);
+        const {title, background, songWrapper} = (this.$refs as any);
         const titleYValue = 400;
         const backgroundYValue = 50;
-        // const songXValue = 200;
+        const songXValue = 100;
         this.tl
             .add("start")
             .set([title.$el, background], {display: 'none'})
             .set(title.$el, {y: `-${titleYValue}px`})
             .set(background, {y: `-${backgroundYValue}px`})
-            // .set(song, {left: `-${songXValue}px`})
-            // .from(song, .5, {left: 0}, "start")
+            .set(songWrapper, {left: `${songXValue}px`})
+            // .to(songWrapper, .1, {left: '-200px'}, "start")
+            // .to(songWrapper, .5, {left: `0px`}, "start")
+            .to(songWrapper, 1, {left: `-${songXValue}px`}, "start")
             // .from(song, .5, {left: `-${songXValue}px`}, "start+=.5")
             .from(title.$el, 1, {display: 'block', y: `${titleYValue}px`}, "start")
             .from(background, 1, {display: 'block', y: `${backgroundYValue}px`}, "start")
