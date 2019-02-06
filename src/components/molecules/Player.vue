@@ -1,9 +1,12 @@
 <style lang="scss" scoped>
     .player {
-        height: 100%;
-        /*width: 500px;*/
         display: flex;
-        width: 100%;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 50vw;
+        height: 100px;
+        background-color: config('colors.black');
         .player__picture {
             width: 100px;
             height: 100px;

@@ -73,7 +73,7 @@ $theme:(
     pink-light: #fa7ea8,
     pink-lighter: #ffbbca,
     pink-lightest: #ffebef,
-    base-text-color: #22292f,
+    base-text-color: #000,
     base-bg-color: #f8fafc,
     base-border-color: #dae1e7,
     danger: #e3342f,
@@ -205,7 +205,7 @@ $theme:(
     pink-light: #fa7ea8,
     pink-lighter: #ffbbca,
     pink-lightest: #ffebef,
-    base-text-color: #22292f,
+    base-text-color: #000,
     base-bg-color: #f8fafc,
     base-border-color: #dae1e7,
     danger: #e3342f,
@@ -289,7 +289,7 @@ $theme:(
     pink-light: #fa7ea8,
     pink-lighter: #ffbbca,
     pink-lightest: #ffebef,
-    base-text-color: #22292f,
+    base-text-color: #000,
     base-bg-color: #f8fafc,
     base-border-color: #dae1e7,
     danger: #e3342f,
@@ -386,7 +386,7 @@ $theme:(
     pink-light: #fa7ea8,
     pink-lighter: #ffbbca,
     pink-lightest: #ffebef,
-    base-text-color: #22292f,
+    base-text-color: #000,
     base-bg-color: #f8fafc,
     base-border-color: #dae1e7,
     danger: #e3342f,
@@ -635,6 +635,11 @@ $theme:(
     ),
     spaceUnit: (
       base: 20px
+    ),
+    misc: (
+      navigation: (
+        width: 80px
+      )
     )
   )
 );

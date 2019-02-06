@@ -7,7 +7,7 @@
             padding-bottom: config('padding.xl');
         }
         .page-text__content {
-            color: white;
+            color: config('base-text-color');
             @apply text-3xl;
             /deep/ {
                 .emoji {
@@ -23,7 +23,7 @@
                         border: 0;
                         border-left: 8px solid rgb(38, 40, 72);
                         background-color: transparent;
-                        color: white;
+                        color: config('base-text-color');
                         padding: 16px 30px;
                         @apply text-xl font-sans;
                     }
@@ -42,7 +42,7 @@
                         width: 70px;
                         max-width: 30%;
                         height: 8px;
-                        background-color: white;
+                        background-color: config('base-text-color');
                         transition: all .5s cubic-bezier(.165, .84, .44, 1);
                     }
                     &:hover {

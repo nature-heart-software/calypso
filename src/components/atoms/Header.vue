@@ -22,7 +22,7 @@
                     float: left;
                     width: 70px;
                     height: 18px;
-                    background-color: white;
+                    background-color: config('colors.base-text-color');
                     margin-top: 15px;
                     clear: both;
                 }
@@ -38,7 +38,7 @@
             }
         }
 
-        &--dark-theme {
+        &--light {
             color: white;
         }
     }
@@ -80,7 +80,7 @@
 </style>
 
 <template>
-    <component class="header header--dark-theme" :class="[getLooks]" :is="tag">
+    <component class="header" :class="[getLooks]" :is="tag">
         <slot></slot>
         <div v-if="hasHeaderBar" class="header__bar"></div>
     </component>
@@ -101,6 +101,7 @@
             brand: 'header--brand',
             main: 'header--main',
             right: 'header--right',
+            light: 'header--light',
         };
 
         private get hasHeaderBar() {

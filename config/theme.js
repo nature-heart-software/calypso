@@ -51,13 +51,18 @@ let pristine = {
     },
     spaceUnit: {
         base: "20px"
+    },
+    misc: {
+        navigation: {
+            width: '80px',
+        }
     }
 };
 
 let colors = {
     ...defaultConfig.colors,
 
-    'base-text-color': '#22292f',
+    'base-text-color': '#000',
     'base-bg-color': '#f8fafc',
     'base-border-color': '#dae1e7',
     'danger': '#e3342f',
