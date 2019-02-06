@@ -1,8 +1,9 @@
 <style lang="scss" scoped>
     .player {
         height: 100%;
-        width: 500px;
+        /*width: 500px;*/
         display: flex;
+        width: 100%;
         .player__picture {
             width: 100px;
             height: 100px;
@@ -131,7 +132,7 @@
 
 <template>
     <div class="player">
-        <div class="player__controls pr-w-full pr-pr-8 pr-py-4">
+        <div class="player__controls pr-w-full pr-px-8 pr-py-4">
             <div class="player__controls__top pr-w-full pr-max-w-full">
                 <div class="player__controls__buttons">
                     <div class="pr-inline-flex">

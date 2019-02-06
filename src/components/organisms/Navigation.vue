@@ -131,57 +131,59 @@
 
 <template>
         <header class="navigation">
-            <nav ref="nav" class="container pr-flex">
+            <nav ref="nav" class="pr-w-full pr-flex">
                 <div ref="navContainer" class="navigation__container">
                     <div class="navigation__screen">
                         <div class="navigation__screen__top">
-                            <div class="navigation__menu-button pr-cursor-pointer" @click="toggleFullscreen">
-                                <div class="navigation__menu-button__bar" v-for="i in 3"></div>
+                            <!--<div class="navigation__menu-button pr-cursor-pointer" @click="toggleFullscreen">-->
+                                <!--<div class="navigation__menu-button__bar" v-for="i in 3"></div>-->
+                            <!--</div>-->
+                            <div class="navigation__screen__top__left pr-w-1/2  pr-flex pr-items-center pr-h-full pr-bg-black">
+                                <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
                             </div>
-                            <Header class="navigation__brand" look="brand">Sweet<br>Trips</Header>
-                            <div class="pr-flex-1 pr-flex pr-justify-end pr-h-full">
+                            <div class="navigation__screen__top__right pr-w-1/2 pr-flex pr-justify-end pr-h-full pr-relative">
                                 <Player v-show="$store.state.player.song" class="pr-self-end"></Player>
-                            </div>
-                        </div>
-                        <div class="navigation__screen__middle" :class="{'pr-opacity-0 pr-pointer-events-none': !$store.state.navigation.fullscreen}">
-                            <ul class="navigation__links pr-list-reset">
-                                <li v-for="link in navigation" class="navigation__link">
-                                    <Header look="brand">
-                                        <TweenTextTransition :ref="link.ref" class="pr-inline">
-                                            <router-link :class="{'pr-opacity-0': !shown}" @click.native="toggleFullscreen" :to="link.to">{{link.name}}</router-link>
-                                        </TweenTextTransition>
-                                    </Header>
-                                </li>
-                            </ul>
-                        </div>
-                        <div ref="navBottom" class="navigation__screen__bottom">
-                            <div class="pr-w-2/3 pr-flex pr-flex-wrap pr-items-end">
-                                <TweenTextTransition ref="title">
-                                    <transition @enter="titleTransitionEnter" @leave="titleTransitionLeave" :css="false" mode="out-in">
-                                        <div :key="$store.state.player.song ? $store.state.player.song.id : ''">
-                                            <Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>
-                                            <Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>
-                                        </div>
-                                    </transition>
-                                </TweenTextTransition>
-                            </div>
-                            <div class="pr-w-1/3">
-                                <div class="pr-ratio-1/1">
-                                    <TweenTransition ref="cover" class="pr-absolute pr-pin">
-                                        <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">
-                                            <img :key="cover" class="pr-fit-cover pr-w-full pr-h-full" :src="cover">
+                                <div class="navigation__screen__background">
+                                    <TweenTransition ref="background" class="pr-absolute pr-pin">
+                                        <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
+                                            <BluredBackground :key="cover" :image="cover" look="heavy" class="pr-absolute pr-pin pr-opacity-25"></BluredBackground>
                                         </transition>
                                     </TweenTransition>
                                 </div>
                             </div>
                         </div>
-                        <div class="navigation__screen__background">
-                            <TweenTransition ref="background" class="pr-absolute pr-pin">
-                                <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false" mode="out-in">
-                                    <BluredBackground :key="cover" :image="cover" look="heavy" class="pr-absolute pr-pin pr-opacity-25"></BluredBackground>
-                                </transition>
-                            </TweenTransition>
-                        </div>
+                        <!--<div class="navigation__screen__middle" :class="{'pr-opacity-0 pr-pointer-events-none': !$store.state.navigation.fullscreen}">-->
+                            <!--<ul class="navigation__links pr-list-reset">-->
+                                <!--<li v-for="link in navigation" class="navigation__link">-->
+                                    <!--<Header look="brand">-->
+                                        <!--<TweenTextTransition :ref="link.ref" class="pr-inline">-->
+                                            <!--<router-link :class="{'pr-opacity-0': !shown}" @click.native="toggleFullscreen" :to="link.to">{{link.name}}</router-link>-->
+                                        <!--</TweenTextTransition>-->
+                                    <!--</Header>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div ref="navBottom" class="navigation__screen__bottom">-->
+                            <!--<div class="pr-w-2/3 pr-flex pr-flex-wrap pr-items-end">-->
+                                <!--<TweenTextTransition ref="title">-->
+                                    <!--<transition @enter="titleTransitionEnter" @leave="titleTransitionLeave" :css="false" mode="out-in">-->
+                                        <!--<div :key="$store.state.player.song ? $store.state.player.song.id : ''">-->
+                                            <!--<Header class="pr-w-full pr-ml-lg pr-mb-base" look="brand">Playing</Header>-->
+                                            <!--<Header class="pr-w-full" look="main">{{$store.state.player.song ? $store.state.player.song.embeds[0].title : ''}}</Header>-->
+                                        <!--</div>-->
+                                    <!--</transition>-->
+                                <!--</TweenTextTransition>-->
+                            <!--</div>-->
+                            <!--<div class="pr-w-1/3">-->
+                                <!--<div class="pr-ratio-1/1">-->
+                                    <!--<TweenTransition ref="cover" class="pr-absolute pr-pin">-->
+                                        <!--<transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false" mode="out-in">-->
+                                            <!--<img :key="cover" class="pr-fit-cover pr-w-full pr-h-full" :src="cover">-->
+                                        <!--</transition>-->
+                                    <!--</TweenTransition>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </nav>

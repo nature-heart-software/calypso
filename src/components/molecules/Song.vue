@@ -16,8 +16,9 @@
         }
         .song__background--wrapper {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 80%;
+            height: 60%;
+            padding-left: 10%;
         }
         .song__background {
             position: absolute;
@@ -26,7 +27,7 @@
             top: 50%;
             transform: translate(0, -50%);
             overflow: hidden;
-            opacity: .3;
+            opacity: 1;
             transition: all .6s cubic-bezier(.215, .61, .355, 1)
             /*<!--.song__background__image {-->*/
                 /*<!--position: absolute;-->*/
@@ -51,13 +52,11 @@
             }
             .song__content__user {
                 display: flex;
-                transform: translate(0, -50%);
-                align-items: flex-end;
+                align-items: center;
                 width: 100%;
-                padding-left: config('padding.lg');
                 .song__content__user__picture {
-                    width: 128px;
-                    height: 128px;
+                    width: 64px;
+                    height: 64px;
                     background-size: cover;
                 }
                 .song__content__user__name {
@@ -103,17 +102,19 @@
                         <div class="pr-w-full pr-relative pr-pr-lg pr-pointer-events-none">
                             <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__cover pr-ratio-1/1 pr-bg-cover pr-bg-center pr-pointer-events-auto"
                                  :style="`background-image: url(${song.embeds[0].thumbnail.url})`"></div>
-                            <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__user pr-absolute pr-pin-bottom pr-pointer-events-auto">
-                                <div class="song__content__user__picture" :style="`background-image: url(https://cdn.discordapp.com/avatars/${song.author.id}/${song.author.avatar}.jpg)`"></div>
-                                <div class="song__content__user__name">
-                                    <Header class="pr-capitalize">{{song.author.username}} {{scrollPercentage}}<br><span class="pr-font-normal">Shared</span>
-                                    </Header>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="song__content__title pr-pointer-events-none">
-                        <Header ref="title" class="song__content__title__header" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
+                        <div ref="title">
+                            <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__user pr-pointer-events-auto">
+                                <div class="song__content__user__picture" :style="`background-image: url(https://cdn.discordapp.com/avatars/${song.author.id}/${song.author.avatar}.jpg)`"></div>
+                                <div class="song__content__user__name">
+                                    <Header class="pr-capitalize">{{song.author.username}}<br><span class="pr-font-normal">Shared</span>
+                                    </Header>
+                                </div>
+                            </div>
+                            <Header class="song__content__title__header pr-pointer-events-auto" @mouseenter="hover = true" @mouseleave="hover = false" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,17 +170,18 @@ export default class Song extends Vue {
         const songXValue = 100;
         this.tl
             .add("start")
-            .set([title.$el, background], {display: 'none'})
-            .set(title.$el, {y: `-${titleYValue}px`})
+            .set([title, background], {display: 'none'})
+            .set(title, {y: `-${titleYValue}px`})
             .set(background, {y: `-${backgroundYValue}px`})
             .set(songWrapper, {left: `${songXValue}px`})
             // .to(songWrapper, .1, {left: '-200px'}, "start")
             // .to(songWrapper, .5, {left: `0px`}, "start")
             .to(songWrapper, 1, {left: `-${songXValue}px`}, "start")
+            // .to(songWrapper, .2, {opacity: 0}, "start+=.7")
             // .from(song, .5, {left: `-${songXValue}px`}, "start+=.5")
-            .from(title.$el, 1, {display: 'block', y: `${titleYValue}px`}, "start")
+            .from(title, 1, {display: 'block', y: `${titleYValue}px`}, "start")
             .from(background, 1, {display: 'block', y: `${backgroundYValue}px`}, "start")
-            .set([title.$el, background], {display: 'none'})
+            .set([title, background], {display: 'none'})
             // .set(song, {left: `-${songXValue}px`})
         ;
         this.bindListeners();

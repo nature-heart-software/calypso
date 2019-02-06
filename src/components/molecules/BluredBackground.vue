@@ -3,10 +3,10 @@
         position: relative;
         .bluredBackground__image {
             position: absolute;
-            top: -5%;
-            left: -5%;
-            right: -5%;
-            bottom: -5%;
+            top: -50%;
+            left: -50%;
+            right: -50%;
+            bottom: -50%;
             background-size: cover;
             background-position: center;
             filter: blur(10px);
