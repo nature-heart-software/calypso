@@ -37,7 +37,7 @@
             <Header class="navigation__brand" look="brand light">Sweet Trips</Header>
         </nav>
         <TweenTransition ref="background" class="navigation__background">
-            <transition @enter="backgroundTransitionEnter" @leave="backgroundTransitionLeave" :css="false"
+            <transition @enter="transitionEnter(arguments, 'background')" @leave="transitionLeave(arguments, 'background')" :css="false"
                         mode="out-in">
                 <BluredBackground :key="cover" :image="cover" look="heavy"
                                   class="pr-absolute pr-pin pr-opacity-25"></BluredBackground>
@@ -94,17 +94,14 @@
         }
 
         private transitionEnter(args, ref): void {
-            console.log("enter", ref);
-            (this.$refs[ref] as any)[0].enter(args[1]);
+            (this.$refs[ref] as any).enter(args[1]);
         }
 
         private transitionLeave(args, ref): void {
-            console.log("leave", ref);
-            (this.$refs[ref] as any)[0].leave(args[1]);
+            (this.$refs[ref] as any).leave(args[1]);
         }
 
         private show(): void {
-            console.log("menu enter");
             const {nav, navBottom} = (this.$refs as any);
             console.log(nav);
             TweenLite.to(nav, .5, {
@@ -124,7 +121,6 @@
         }
 
         private hide(): void {
-            console.log("menu leave");
             const {nav, navBottom} = (this.$refs as any);
             TweenLite.to(nav, .5, {
                 height: 100, ease: Expo.easeOut, onComplete: () => {
@@ -157,22 +153,6 @@
 
         private backgroundTransitionLeave(el, done): void {
             (this.$refs["background"] as any).leave(done);
-        }
-
-        private coverTransitionEnter(el, done): void {
-            (this.$refs["cover"] as any).enter(done);
-        }
-
-        private coverTransitionLeave(el, done): void {
-            (this.$refs["cover"] as any).leave(done);
-        }
-
-        private titleTransitionEnter(el, done): void {
-            (this.$refs["title"] as any).enter(done);
-        }
-
-        private titleTransitionLeave(el, done): void {
-            (this.$refs["title"] as any).leave(done);
         }
     }
 </script>

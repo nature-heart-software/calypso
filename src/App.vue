@@ -6,7 +6,7 @@
                 <router-view class="app__view" :class="{'app__view--blured': $store.state.navigation.fullscreen}"></router-view>
             </transition>
         </TweenTransition>
-        <!--<BackgroundFigures></BackgroundFigures>-->
+        <BackgroundFigures></BackgroundFigures>
         <Player v-show="$store.state.player.song" class="app__player"></Player>
     </div>
 </template>
@@ -65,15 +65,15 @@
             transform: scale(.9);
         }
     }
-    &:after {
-        content: '';
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 60vw;
-        height: 100vh;
-        background-color: #EFEFEF;
-        z-index: -1;
-    }
+    //&:after {
+    //    content: '';
+    //    position: fixed;
+    //    top: 0;
+    //    right: 0;
+    //    width: 60vw;
+    //    height: 100vh;
+    //    background-color: #EFEFEF;
+    //    z-index: -1;
+    //}
 }
 </style>

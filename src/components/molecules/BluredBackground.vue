@@ -12,13 +12,25 @@
             filter: blur(10px);
         }
         &--heavy {
-            filter: blur(60px);
+            .bluredBackground__image {
+                filter: blur(60px);
+            }
+        }
+        &--clear {
+            .bluredBackground__image {
+                opacity: 1;
+            }
+        }
+        &--grayscale {
+            .bluredBackground__image {
+                opacity: 1;
+            }
         }
     }
 </style>
 
 <template>
-    <div class="bluredBackground">
+    <div class="bluredBackground" :class="[getLooks]">
         <div ref="background" class="bluredBackground__image" :style="`background-image: url('${image}');`">
             <slot></slot>
         </div>
@@ -39,6 +51,8 @@ export default class BluredBackground extends Vue {
     private looks: any = {
         default: '',
         heavy: 'bluredBackground--heavy',
+        clear: 'bluredBackground--clear',
+        grayscale: 'bluredBackground--grayscale'
     };
 
     private get getLooks() {

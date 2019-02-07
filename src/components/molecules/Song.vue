@@ -54,6 +54,7 @@
                 display: flex;
                 align-items: center;
                 width: 100%;
+                margin-bottom: 20px;
                 .song__content__user__picture {
                     width: 64px;
                     height: 64px;
@@ -86,7 +87,7 @@
                 position: relative;
                 flex: 1;
                 display: flex;
-                align-items: center;
+                /*align-items: center;*/
                 .song__content__title__header {
                     /*position: absolute;*/
                     top: 0;
@@ -121,7 +122,7 @@
                         </div>
                     </div>
                     <div class="song__content__title pr-pointer-events-none">
-                        <div ref="title">
+                        <div ref="title" class="pr-w-full">
                             <div @mouseenter="hover = true" @mouseleave="hover = false" class="song__content__user pr-pointer-events-auto">
                                 <div class="song__content__user__picture" :style="`background-image: url(https://cdn.discordapp.com/avatars/${song.author.id}/${song.author.avatar}.jpg)`"></div>
                                 <div class="song__content__user__name">
@@ -187,7 +188,7 @@ export default class Song extends Vue {
         this.tl
             .add("start")
             .set([title, background], {display: 'none'})
-            .set(title, {y: `-${titleYValue}px`})
+            .set(title, {y: `-${titleYValue*.3}px`})
             .set(background, {y: `-${backgroundYValue}px`})
             // .set(songWrapper, {left: `${songXValue}px`})
             // .to(songWrapper, 1, {left: `-${songXValue}px`}, "start")

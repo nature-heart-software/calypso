@@ -62,7 +62,7 @@ let pristine = {
 let colors = {
     ...defaultConfig.colors,
 
-    'base-text-color': '#000',
+    'base-text-color': '#272a4c',
     'base-bg-color': '#f8fafc',
     'base-border-color': '#dae1e7',
     'danger': '#e3342f',
