@@ -16,19 +16,24 @@
         }
         .song__background--wrapper {
             position: absolute;
-            width: 80%;
+            width: 100%;
             height: 60%;
-            padding-left: 10%;
         }
         .song__background {
-            position: absolute;
-            width: 45%;
-            height: 80%;
+            position: relative;
+            height: 100%;
             top: 50%;
-            transform: translate(0, -50%);
-            overflow: hidden;
+            transform: translate(-50px, -50%);
             opacity: .5;
-            transition: all .6s cubic-bezier(.215, .61, .355, 1)
+            transition: all .6s cubic-bezier(.215, .61, .355, 1);
+            .song__background__imageWrapper,
+            .song__background__image {
+                height: 100%;
+            }
+            .song__background__imageWrapper {
+                width: 50%;
+                overflow: hidden;
+            }
             /*<!--.song__background__image {-->*/
                 /*<!--position: absolute;-->*/
                 /*<!--top: -5%;-->*/
@@ -63,7 +68,7 @@
                 .song__content__user__name {
                     height: (128px/2);
                     display: flex;
-                    align-items: top;
+                    /*align-items: top;*/
                     margin-left: 10px;
                     .song__content__user__name__nick,
                     .song__content__user__name__action {
@@ -87,7 +92,7 @@
                 position: relative;
                 flex: 1;
                 display: flex;
-                /*align-items: center;*/
+                align-items: center;
                 .song__content__title__header {
                     /*position: absolute;*/
                     top: 0;
@@ -99,7 +104,7 @@
             cursor: pointer;
             .song__background {
                 height: 90%;
-                width: 50%;
+                /*width: 50%;*/
                 /*opacity: .5;*/
             }
         }
@@ -111,7 +116,11 @@
     <div ref="songWrapper" class="songWrapper">
         <div ref="song" class="song" :class="{'song--hover': hover}" @click="play()">
             <div class="song__background--wrapper"  ref="background">
-                <BluredBackground @mouseenter.native="hover = true" @mouseleave.native="hover = false" class="song__background" :image="song.embeds[0].thumbnail.url"></BluredBackground>
+                    <div class="container song__background">
+                        <div class="song__background__imageWrapper">
+                            <BluredBackground @mouseenter.native="hover = true" @mouseleave.native="hover = false" :image="song.embeds[0].thumbnail.url" class="song__background__image"></BluredBackground>
+                        </div>
+                    </div>
             </div>
             <div class="container song__container">
                 <div class="song__content">
@@ -182,19 +191,20 @@ export default class Song extends Vue {
     }
     private mounted() {
         const {title, background, songWrapper} = (this.$refs as any);
-        const titleYValue = 400;
+        const titleYValue = 200;
         const backgroundYValue = 50;
         const songXValue = 100;
+        // https://greensock.com/forums/topic/14458-using-set-in-a-timeline/
         this.tl
             .add("start")
-            .set([title, background], {display: 'none'})
-            .set(title, {y: `-${titleYValue*.3}px`})
+            // .set([title, background], {display: 'none'})
+            .set(title, {y: -titleYValue*.3})
             .set(background, {y: `-${backgroundYValue}px`})
             // .set(songWrapper, {left: `${songXValue}px`})
             // .to(songWrapper, 1, {left: `-${songXValue}px`}, "start")
-            .from(title, 1, {display: 'block', y: `${titleYValue}px`}, "start")
-            .from(background, 1, {display: 'block', y: `${backgroundYValue}px`}, "start")
-            .set([title, background], {display: 'none'})
+            .from(title, 1, {y: titleYValue, immediateRender: false}, "start")
+            .from(background, 1, {y: `${backgroundYValue}px`, immediateRender: false}, "start")
+            // .set([title, background], {display: 'none'})
         ;
         this.bindListeners();
         this.setScrollPercentage();
