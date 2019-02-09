@@ -11,19 +11,19 @@
             background-position: center;
             filter: blur(10px);
         }
-        &--heavy {
+        &.bluredBackground--heavy {
             .bluredBackground__image {
                 filter: blur(60px);
             }
         }
-        &--clear {
+        &.bluredBackground--clear {
             .bluredBackground__image {
                 opacity: 1;
             }
         }
-        &--grayscale {
+        &.bluredBackground--grayscale {
             .bluredBackground__image {
-                opacity: 1;
+                filter: blur(10px) grayscale(100%);
             }
         }
     }

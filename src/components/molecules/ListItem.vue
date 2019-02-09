@@ -4,7 +4,7 @@
         display: flex;
         //margin-top: -200px;
         position: relative;
-        overflow: hidden;
+        /*overflow: hidden;*/
         &:first-of-type {
             margin-top: 0;
         }

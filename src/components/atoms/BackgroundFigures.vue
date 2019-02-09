@@ -27,8 +27,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(#EFEFEF, .95);
-            background-image: url('~@/assets/pattern.png');
+            /*background-color: rgba(#EFEFEF, .85);*/
+            background-image: url('~@/assets/pattern.png'), linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
+            opacity: .8;
+            /*background-image: url('~@/assets/pattern.png');*/
         }
     }
 </style>

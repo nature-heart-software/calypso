@@ -7,7 +7,7 @@
             padding-bottom: config('padding.xl');
         }
         .page-list__content {
-
+            overflow: hidden;
         }
     }
 </style>
@@ -17,8 +17,8 @@
         <div class="container page-list__header">
             <slot name="header"></slot>
         </div>
-        <div>
-            <slot class="page-list__content" name="content"></slot>
+        <div class="page-list__content">
+            <slot name="content"></slot>
         </div>
     </div>
 </template>

@@ -24,8 +24,7 @@
             height: 100%;
             top: 50%;
             transform: translate(-50px, -50%);
-            opacity: .5;
-            transition: all .6s cubic-bezier(.215, .61, .355, 1);
+            /*opacity: .5;*/
             .song__background__imageWrapper,
             .song__background__image {
                 height: 100%;
@@ -33,6 +32,22 @@
             .song__background__imageWrapper {
                 width: 50%;
                 overflow: hidden;
+                height: 100%;
+                float: left;
+                transition: all .6s cubic-bezier(.215, .61, .355, 1);
+                position: relative;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    pointer-events: none;
+                    top: -10px;
+                    left: -10px;
+                    right: -10px;
+                    bottom: -10px;
+                    transition: all .6s cubic-bezier(.215, .61, .355, 1);
+                    background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
+                    opacity: .6;
+                }
             }
             /*<!--.song__background__image {-->*/
                 /*<!--position: absolute;-->*/
@@ -56,9 +71,8 @@
                 box-shadow: 0 0 150px rgba(0,0,0,.3);
             }
             .song__content__user {
-                display: flex;
+                display: inline-flex;
                 align-items: center;
-                width: 100%;
                 margin-bottom: 20px;
                 .song__content__user__picture {
                     width: 64px;
@@ -102,10 +116,12 @@
         }
         &--hover {
             cursor: pointer;
-            .song__background {
-                height: 90%;
-                /*width: 50%;*/
-                /*opacity: .5;*/
+            .song__background__imageWrapper {
+                height: 110%!important;
+                width: 55%!important;
+                &::after {
+                    opacity: .8!important;
+                }
             }
         }
     }
@@ -118,7 +134,7 @@
             <div class="song__background--wrapper"  ref="background">
                     <div class="container song__background">
                         <div class="song__background__imageWrapper">
-                            <BluredBackground @mouseenter.native="hover = true" @mouseleave.native="hover = false" :image="song.embeds[0].thumbnail.url" class="song__background__image"></BluredBackground>
+                            <BluredBackground @mouseenter.native="hover = true" @mouseleave.native="hover = false" :image="song.embeds[0].thumbnail.url" class="song__background__image" look="clear grayscale"></BluredBackground>
                         </div>
                     </div>
             </div>
@@ -139,7 +155,7 @@
                                     </Header>
                                 </div>
                             </div>
-                            <Header class="song__content__title__header pr-pointer-events-auto" @mouseenter="hover = true" @mouseleave="hover = false" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
+                            <Header class="song__content__title__header" @mouseenter="hover = true" @mouseleave="hover = false" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
                         </div>
                     </div>
                 </div>
