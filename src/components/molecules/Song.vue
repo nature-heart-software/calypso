@@ -36,6 +36,7 @@
                 float: left;
                 transition: all .6s cubic-bezier(.215, .61, .355, 1);
                 position: relative;
+                box-shadow: 0 90px 150px rgba(0, 0, 0, 0.1);
                 &::after {
                     content: '';
                     position: absolute;
@@ -45,7 +46,7 @@
                     right: -10px;
                     bottom: -10px;
                     transition: all .6s cubic-bezier(.215, .61, .355, 1);
-                    background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);
+                    background-image: linear-gradient(120deg, config('colors.secondary') 0%, config('colors.primary') 100%);
                     opacity: .6;
                 }
             }
@@ -155,7 +156,7 @@
                                     </Header>
                                 </div>
                             </div>
-                            <Header class="song__content__title__header" @mouseenter="hover = true" @mouseleave="hover = false" look="main" :look="'main'">{{song.embeds[0].title}}</Header>
+                            <Header class="song__content__title__header" @mouseenter="hover = true" @mouseleave="hover = false" look="main light">{{song.embeds[0].title}}</Header>
                         </div>
                     </div>
                 </div>
@@ -213,14 +214,14 @@ export default class Song extends Vue {
         // https://greensock.com/forums/topic/14458-using-set-in-a-timeline/
         this.tl
             .add("start")
-            // .set([title, background], {display: 'none'})
+            .set([title, background], {display: 'none'})
             .set(title, {y: -titleYValue*.3})
             .set(background, {y: `-${backgroundYValue}px`})
             // .set(songWrapper, {left: `${songXValue}px`})
             // .to(songWrapper, 1, {left: `-${songXValue}px`}, "start")
-            .from(title, 1, {y: titleYValue, immediateRender: false}, "start")
-            .from(background, 1, {y: `${backgroundYValue}px`, immediateRender: false}, "start")
-            // .set([title, background], {display: 'none'})
+            .from(title, 1, {display: 'block', y: titleYValue, immediateRender: false}, "start")
+            .from(background, 1, {display: 'block', y: `${backgroundYValue}px`, immediateRender: false}, "start")
+            .set([title, background], {display: 'none'})
         ;
         this.bindListeners();
         this.setScrollPercentage();

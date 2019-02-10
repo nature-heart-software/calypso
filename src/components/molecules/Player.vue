@@ -21,16 +21,13 @@
                 text-align: center;
             }
         }
-        .player__controls__middle {
-            height: 38px;
-        }
         .player__trackName {
             color: white;
             font-weight: bold;
             font-size: 14px;
             letter-spacing: .1rem;
             .player__trackName__top {
-                height: 21px;
+                height: 24px;
             }
             .player__trackName__bottom {
                 height: 17px;
@@ -61,7 +58,7 @@
                     .el-slider__bar {
                         border-radius: 0;
                         &:before {
-                            background-color: #6e22ec;
+                            background-color: config('colors.primary');
                         }
                     }
                     .el-slider__button {
@@ -91,42 +88,69 @@
                 }
             }
         }
-        .player__controls {
+        .player__body {
             flex: 1;
             align-items: center;
             display: flex;
             flex-wrap: wrap;
             max-width: calc(100% - 100px);
-            .player__controls__buttons {
-                display: flex;
-                .player__controls__button {
-                    width: 16px;
-                    height: 16px;
-                    display: inline-flex;
-                    justify-content: center;
-                    align-items: center;
-                    color: white;
-                    cursor: pointer;
-                    i {
-                        line-height: 1;
-                    }
-                    & + .player__controls__button {
-                        margin-left: 20px;
-                    }
-                    &--active {
-                        color: #3ce3cc;
-                    }
-                }
-            }
-            .player__controls__bottom {
+            .player__body__bottom {
                 height: 4px;
             }
 
+        }
+        .player__buttons {
+            display: flex;
+        }
+        .player__button {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            i {
+                line-height: 1;
+            }
+            & + .player__button {
+                margin-left: 20px;
+            }
+            &:hover {
+                color: config('colors.secondary');
+            }
+            &--active {
+                color: config('colors.primary')!important;
+            }
+
+        }
+        .player__controls {
+            display: flex;
+            align-content: space-between;
+            flex-wrap: wrap;
+            width: 14%;
+            .player__buttons {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+            .player__controls__top {
+                height: 50px;
+                .player__button {
+                    width: auto;
+                    height: auto;
+                    font-size: 1.4rem;
+                }
+            }
+            .player__controls__bottom {
+                position: absolute;
+            }
         }
         &:hover {
           /deep/ {
               .el-slider__button-wrapper {
                   opacity: 1;
+                  /*cursor: pointer!important;*/
               }
           }
         }
@@ -135,32 +159,34 @@
 
 <template>
     <div class="player">
-        <div class="player__controls pr-w-full pr-px-8 pr-py-4">
-            <div class="player__controls__top pr-w-full pr-max-w-full">
-                <div class="player__controls__buttons">
-                    <div class="pr-inline-flex">
-                        <div class="player__controls__button" @click="playPrevious()">
-                            <i class="icon ion-md-skip-backward"></i>
-                        </div>
-                        <div class="player__controls__button" @click="resumePause()">
-                            <i v-if="isPlaying" class="icon ion-md-pause"></i>
-                            <i v-else class="icon ion-md-play"></i>
-                        </div>
-                        <div class="player__controls__button" @click="playNext()">
-                            <i class="icon ion-md-skip-forward"></i>
-                        </div>
+        <div class="player__controls pr-pl-8 pr-py-4">
+            <div class="player__buttons player__controls__top">
+                <div class="player__button" @click="playPrevious()">
+                    <i class="icon ion-md-skip-backward"></i>
+                </div>
+                <div class="player__button" @click="resumePause()">
+                    <i v-if="isPlaying" class="icon ion-md-pause"></i>
+                    <i v-else class="icon ion-md-play"></i>
+                </div>
+                <div class="player__button" @click="playNext()">
+                    <i class="icon ion-md-skip-forward"></i>
+                </div>
+            </div>
+            <div class="player__buttons player__controls__bottom pr-relative">
+                <div class="pr-flex-1 pr-inline-flex    ">
+                    <div class="player__button" :class="{'player__button--active': repeat}" @click="toggleRepeat()">
+                        <i class="icon ion-md-repeat"></i>
                     </div>
-                    <div class="pr-flex-1 pr-justify-end pr-inline-flex">
-                        <div class="player__controls__button" :class="{'player__controls__button--active': repeat}" @click="toggleRepeat()">
-                            <i class="icon ion-md-repeat"></i>
-                        </div>
-                        <div class="player__controls__button" @click="openLink()">
-                            <i class="icon ion-md-open"></i>
-                        </div>
+                    <div class="player__button" @click="openLink()">
+                        <i class="icon ion-md-open"></i>
                     </div>
                 </div>
             </div>
-            <div class="player__controls__middle pr-w-full pr-pointer-events-none">
+        </div>
+        <div class="player__body pr-w-full pr-px-8 pr-py-4">
+            <!--<div class="player__body__top pr-w-full pr-max-w-full">-->
+            <!--</div>-->
+            <div class="player__body__middle pr-w-full pr-pointer-events-none">
                 <div class="player__trackName">
                     <div class="player__trackName__top player__trackName__link" :class="{'player__trackName__link--hidden': !showText}">
                         <TweenTextTransition ref="text1" class="pr-inline" @show-text="showText = true" @hide-text="showText = false">
@@ -195,7 +221,7 @@
                     </div>
                 </div>
             </div>
-            <div class="player__controls__bottom pr-w-full">
+            <div class="player__body__bottom pr-w-full">
                 <div class="player__trackProgress">
                     <el-slider height="4px" v-model="trueCurrentTime" :min="0" :max="$store.state.player.trueTotalTime" :show-tooltip="false"
                                @change="setTime" @mousedown.native="isSliding = true"></el-slider>

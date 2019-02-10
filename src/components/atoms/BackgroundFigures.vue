@@ -6,21 +6,21 @@
         right: 0;
         width: 60vw;
         height: 100vh;
-        background-color: #EFEFEF;
         overflow: hidden;
-        /*<!--.backgroundFigures__figure,-->*/
-        /*<!--.backgroundFigures__group {-->*/
-            /*<!--display: inline-block;-->*/
-            /*<!--position: absolute;-->*/
-        /*<!--}-->*/
-        /*<!--.backgroundFigures__figure {-->*/
-            /*<!--background-color: #10111f;-->*/
-        /*<!--}-->*/
-        /*<!--.backgroundFigures__timer {-->*/
-            /*<!--bottom: -3%;-->*/
-            /*<!--right: 3%;-->*/
-            /*<!--z-index: 1;-->*/
-        /*<!--}-->*/
+        .backgroundFigures__figure,
+        .backgroundFigures__group {
+            display: inline-block;
+            position: absolute;
+            z-index: 1;
+        }
+        .backgroundFigures__figure {
+            background-color: #10111f;
+        }
+        .backgroundFigures__timer {
+            bottom: 3%;
+            right: 3%;
+            z-index: 2;
+        }
         .backgroundFigures__overlay {
             position: absolute;
             top: 0;
@@ -37,16 +37,6 @@
 
 <template>
     <div class="backgroundFigures">
-        <TweenTransition ref="background" class="pr-absolute pr-pin">
-            <transition @enter="transitionEnter(arguments, 'background')" @leave="transitionLeave(arguments, 'background')" :css="false"
-                        mode="out-in">
-                <BluredBackground :key="cover" :image="cover" look="clear"
-                                  class="pr-absolute pr-pin"></BluredBackground>
-            </transition>
-        </TweenTransition>
-        <div class="backgroundFigures__overlay">
-
-        </div>
         <!--<div class="backgroundFigures__group backgroundFigures__timer" ref="timerSVG">-->
             <!--<svg :key="this['player/currentTimeFormated']" overflow="visible" :width="`${timerBBox.width}`" :height="`${timerBBox.height}`">-->
                 <!--<defs>-->
@@ -90,6 +80,14 @@
                 <!--transform: translate(${figure.x || 0}, ${figure.x || 0}) rotate(${figure.rotation}deg);-->
             <!--`"></div>-->
         <!--</template>-->
+        <TweenTransition ref="cover" class="pr-absolute pr-pin">
+            <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false"
+                        mode="out-in">
+                <BluredBackground :key="cover" :image="cover" look="clear"
+                                  class="pr-absolute pr-pin"></BluredBackground>
+            </transition>
+        </TweenTransition>
+        <div class="backgroundFigures__overlay"></div>
     </div>
 </template>
 
@@ -131,6 +129,14 @@
             return this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : "";
         }
 
+        public coverTransitionEnter(el, done) {
+            (this.$refs.cover as any).enter(done);
+        }
+
+        public coverTransitionLeave(el, done) {
+            (this.$refs.cover as any).leave(done);
+        }
+
         private transitionEnter(args, ref): void {
             (this.$refs[ref] as any).enter(args[1]);
         }
@@ -140,30 +146,30 @@
         }
 
         private figures: any[] = [
-            {
-                // type: 'group',
-                // height: '250px',
-                // width: '330px',
-                // bottom: '-10%',
-                // right: '15%',
-                // rotation: -22,
-                // figures: [
-                //     {
-                //         height: '250px',
-                //         width: '150px',
-                //     },
-                //     {
-                //         height: '250px',
-                //         width: '150px',
-                //         top: '0',
-                //         right: '0',
-                //     },
-                // ]
-            }
+            // {
+            //     type: 'group',
+            //     height: '250px',
+            //     width: '330px',
+            //     bottom: '-10%',
+            //     right: '15%',
+            //     rotation: -22,
+            //     figures: [
+            //         {
+            //             height: '250px',
+            //             width: '150px',
+            //         },
+            //         {
+            //             height: '250px',
+            //             width: '150px',
+            //             top: '0',
+            //             right: '0',
+            //         },
+            //     ]
+            // }
         ];
 
         private mounted() {
-            // this.bindListeners();
+            this.bindListeners();
         }
 
         private onMouseMove(e) {

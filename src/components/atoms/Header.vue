@@ -40,6 +40,12 @@
 
         &--light {
             color: white;
+            .header__bar,
+            &.header__bar {
+                &::before {
+                    background-color: white;
+                }
+            }
         }
     }
 </style>

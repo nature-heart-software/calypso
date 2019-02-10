@@ -50,7 +50,7 @@
 
 <style lang="scss">
     body {
-        /*background-color: config('colors.black');*/
+        background-color: config('colors.background');
         //height: (948px*3)+1;
     }
 #app {

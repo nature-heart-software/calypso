@@ -22,15 +22,15 @@
                 width: 0;
             }
             .tweenTransition__bar1 {
-                background-color: #6e22ec;
+                background-color: config('colors.primary');
             }
             .tweenTransition__bar2 {
-                /*background-color: #3ce3cc;*/
-                background-color: config('colors.black');
+                background-color: config('colors.secondary');
+                /*background-color: config('colors.black');*/
             }
             .tweenTransition__bar3 {
-                /*background-color: config('colors.black');*/
-                background-color: #3ce3cc;
+                background-color: config('colors.black');
+                /*background-color: config('colors.secondary');*/
             }
         }
     }

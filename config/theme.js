@@ -62,15 +62,16 @@ let pristine = {
 let colors = {
     ...defaultConfig.colors,
 
+    'background': '#EAE4DF',
     'base-text-color': '#272a4c',
     'base-bg-color': '#f8fafc',
     'base-border-color': '#dae1e7',
     'danger': '#e3342f',
     'warning': '#f6993f',
     'success': '#38c172',
-    'secondary': '#3490dc',
     'info': '#3490dc',
-    'primary': '#9561e2',
+    'secondary': '#a6c0fe',
+    'primary': '#f68084',
     'black': '#131424',
 };
 

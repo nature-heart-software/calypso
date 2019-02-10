@@ -36,10 +36,10 @@
         <nav ref="nav">
             <Header class="navigation__brand" look="brand light">Sweet Trips</Header>
         </nav>
-        <TweenTransition ref="background" class="navigation__background">
-            <transition @enter="transitionEnter(arguments, 'background')" @leave="transitionLeave(arguments, 'background')" :css="false"
+        <TweenTransition ref="cover" class="navigation__background">
+            <transition @enter="coverTransitionEnter" @leave="coverTransitionLeave" :css="false"
                         mode="out-in">
-                <BluredBackground :key="cover" :image="cover" look="heavy"
+                <BluredBackground :key="cover" :image="cover"
                                   class="pr-absolute pr-pin pr-opacity-25"></BluredBackground>
             </transition>
         </TweenTransition>
@@ -93,12 +93,22 @@
             return this.$store.state.player.song ? this.$store.state.player.song.embeds[0].thumbnail.proxy_url : "";
         }
 
-        private transitionEnter(args, ref): void {
-            (this.$refs[ref] as any).enter(args[1]);
+        // private transitionEnter(args, ref): void {
+        //     console.log(args[1]);
+        //     (this.$refs[ref] as any).enter(args[1]);
+        // }
+        //
+        // private transitionLeave(args, ref): void {
+        //     console.log(args[1]);
+        //     (this.$refs[ref] as any).leave(args[1]);
+        // }
+
+        public coverTransitionEnter(el, done) {
+            (this.$refs.cover as any).enter(done);
         }
 
-        private transitionLeave(args, ref): void {
-            (this.$refs[ref] as any).leave(args[1]);
+        public coverTransitionLeave(el, done) {
+            (this.$refs.cover as any).leave(done);
         }
 
         private show(): void {
